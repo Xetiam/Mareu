@@ -14,8 +14,8 @@ public class MeetingRoom {
     //Constructor
     public MeetingRoom(Integer roomId){
         this.roomId = roomId;
-        this.participants = null;
-        this.lastReservation = null;
+        this.participants = new ArrayList();
+        this.lastReservation = new Date();
         this.isVacancy = true;
     }
 

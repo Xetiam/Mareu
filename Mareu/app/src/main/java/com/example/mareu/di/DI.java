@@ -9,7 +9,7 @@ public class DI {
 
     private static final ReservationApiService service = new DummyReservationApiService();
 
-    public static ReservationApiService getNeighbourApiService() {
+    public static ReservationApiService getReservationApiService() {
         return service;
     }
 

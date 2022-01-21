@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public interface ReservationApiService {
     ArrayList<MeetingRoom> getMeetingRooms();
+    ArrayList<Reservation> getReservation();
     void deleteMeeting(Reservation reservation);
     void createMeeting(Reservation reservation);
 }

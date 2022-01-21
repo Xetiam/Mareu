@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
     <ImageView
         android:id="@+id/reservationColor"
         android:layout_width="wrap_content"
@@ -19,21 +20,22 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test"/>
+        tool:text="test"/>
     <TextView
         android:id="@+id/participantsList"
         app:layout_constraintStart_toEndOf="@+id/reservationColor"
         app:layout_constraintTop_toBottomOf="@+id/reservationTitle"
         android:textSize="@dimen/medium_Text"
+        android:layout_marginEnd="@dimen/medium_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test"/>
-    <ImageView
+        tool:text="test"/>
+    <ImageButton
         android:id="@+id/item_list_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/long_margin"
-        app:layout_constraintStart_toEndOf="@id/reservationTitle"
+        app:layout_constraintStart_toEndOf="@+id/participantsList"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/ic_baseline_delete_24"/>
 

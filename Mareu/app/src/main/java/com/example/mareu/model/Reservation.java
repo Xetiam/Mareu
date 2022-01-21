@@ -9,7 +9,7 @@ public class Reservation implements Serializable {
     private int roomId;
     private Date meetingDate;
     private ArrayList<String> participants;
-    private String name;
+    private final String name;
     private int color;
 
     //Constructor

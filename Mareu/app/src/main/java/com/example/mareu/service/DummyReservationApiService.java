@@ -7,11 +7,16 @@ import java.util.ArrayList;
 
 public class DummyReservationApiService implements ReservationApiService {
     private final ArrayList<MeetingRoom> meetingRooms = DummyMeetingRoomGenerator.generateMeetingRooms();
-    private final ArrayList<Reservation> reservations = null;
+    private final ArrayList<Reservation> reservations = new ArrayList<>();
 
     @Override
     public ArrayList<MeetingRoom> getMeetingRooms() {
         return meetingRooms;
+    }
+
+    @Override
+    public ArrayList<Reservation> getReservation() {
+        return reservations;
     }
 
     @Override
