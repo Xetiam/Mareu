@@ -47,11 +47,25 @@ public class Reservation implements Serializable {
         int hour = date.getHours();
         int minute = date.getMinutes();
         if(minute>=14){
-            hour = +1;
+            hour = hour + 1;
             minute = minute - 15;
         }
         else{
             minute = minute + 45;
+        }
+        return new Date(date.getYear(), date.getMonth(), date.getDate(),hour,minute);
+    }
+
+    public Date getBeforeMeetingDate() {
+        Date date = this.getMeetingDate();
+        int hour = date.getHours();
+        int minute = date.getMinutes();
+        if(minute<=14){
+            hour = hour - 1;
+            minute = minute + 15;
+        }
+        else{
+            minute = minute - 45;
         }
         return new Date(date.getYear(), date.getMonth(), date.getDate(),hour,minute);
     }

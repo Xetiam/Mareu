@@ -27,7 +27,7 @@ public class MeetingRoom {
     public Boolean getVacancy(Date datePicked) {
         for (Reservation reservation: reservations
              ) {
-            if(datePicked.after(reservation.getMeetingDate()) && datePicked.before(reservation.getEndMeetingDate())){
+            if(datePicked.after(reservation.getMeetingDate()) && datePicked.before(reservation.getEndMeetingDate()) && datePicked.after(reservation.getBeforeMeetingDate())){
                 return false;
             }
         }

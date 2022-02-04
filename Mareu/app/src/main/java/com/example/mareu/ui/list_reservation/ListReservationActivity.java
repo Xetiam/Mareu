@@ -1,4 +1,4 @@
-package com.example.mareu.ui;
+package com.example.mareu.ui.list_reservation;
 
 import android.os.Bundle;
 
@@ -11,8 +11,8 @@ import com.example.mareu.R;
 import com.example.mareu.di.DI;
 import com.example.mareu.event.DeleteReservationEvent;
 import com.example.mareu.model.Reservation;
-import com.example.mareu.service.ReservationApiService;
-import com.example.mareu.ui.adapter.ReservationRecyclerViewAdapter;
+import com.example.mareu.ui.list_reservation.adapter.ReservationRecyclerViewAdapter;
+import com.example.mareu.ui.add_reservation.AddReservationActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -28,54 +28,54 @@ public class ListReservationActivity extends AppCompatActivity {
     @BindView(R.id.container)
     RecyclerView mRecyclerView;
 
-    private ReservationApiService mApiService = DI.getReservationApiService();
-    private ArrayList<Reservation> mReservations;
+    private ListReservationViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_reservation);
         ButterKnife.bind(this);
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(this), DividerItemDecoration.VERTICAL));
-
+        viewModel = new ListReservationViewModel(DI.getReservationApiService());
+        viewModel.state.observe(this, this::render);
+        viewModel.initList();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        initList();
+        viewModel.initList();
     }
-
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
     }
-
     @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
 
-    private void initList() {
-        mReservations = mApiService.getReservation();
-        if (mReservations != null) {
-            mRecyclerView.setAdapter(new ReservationRecyclerViewAdapter(mReservations));
+    private void render(ListReservationState listReservationState){
+        if(listReservationState instanceof ListReservationUpdated){
+            ListReservationUpdated state = (ListReservationUpdated) listReservationState;
+            ArrayList<Reservation> reservations = state.reservations;
+            ReservationRecyclerViewAdapter adapter = new ReservationRecyclerViewAdapter(reservations);
+            mRecyclerView.setAdapter(adapter);
         }
     }
 
     @Subscribe
     public void onDeleteNeighbour(DeleteReservationEvent event) {
-        mApiService.deleteMeeting(event.reservation);
-        initList();
+        viewModel.deleteMeeting(event.reservation);
     }
 
     @OnClick(R.id.add_reservation)
     void addNeighbour() {
         AddReservationActivity.navigate(this);
     }
+
 
 }

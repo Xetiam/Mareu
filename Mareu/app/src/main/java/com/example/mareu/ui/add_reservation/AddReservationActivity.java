@@ -1,8 +1,7 @@
-package com.example.mareu.ui;
+package com.example.mareu.ui.add_reservation;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -19,12 +17,9 @@ import com.example.mareu.R;
 import com.example.mareu.di.DI;
 import com.example.mareu.event.RoomCheckAvailableEvent;
 import com.example.mareu.model.MeetingRoom;
-import com.example.mareu.model.Reservation;
-import com.example.mareu.service.ReservationApiService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -53,26 +48,39 @@ public class AddReservationActivity extends AppCompatActivity {
     @BindView(R.id.warning)
     ImageView warning;
 
-    private ReservationApiService mApiService;
+    private AddReservationViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation);
         ButterKnife.bind(this);
-        mApiService = DI.getReservationApiService();
-        init(roomList);
-        int roomId = roomList.getSelectedItemPosition();
-        MeetingRoom meetingRoomSelected = mApiService.getMeetingRooms().get(roomId);
+        viewModel = new AddReservationViewModel(DI.getReservationApiService());
+        viewModel.state.observe(this, this::render);
+        ArrayList<String> roomNames = viewModel.initSpinner();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,roomNames);
+        roomList.setAdapter(adapter);
         timePicker.setIs24HourView(true);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 Date datePicked = formatDate(datePicker, timePicker);
-                EventBus.getDefault().post(new RoomCheckAvailableEvent(datePicked, addButton, meetingRoomSelected));
+                viewModel.isReservationValid(datePicked, roomList.getSelectedItemPosition(), formatParticipants(participantsInput));
             }
         });
 
+    }
+
+    private void render(AddReservationState addReservationState){
+        if(addReservationState instanceof AddReservationStateValidRerservation){
+            addButton.setEnabled(true);
+            warning.setVisibility(View.INVISIBLE);
+        }
+        else if(addReservationState instanceof AddReservationStateInvalidRerservation){
+            addButton.setEnabled(false);
+            warning.setVisibility(View.VISIBLE);
+        }
     }
 
     private ArrayList<String> formatParticipants(TextInputLayout participantsInput) {
@@ -82,33 +90,16 @@ public class AddReservationActivity extends AppCompatActivity {
         return participants;
     }
 
-    private void init(Spinner roomList) {
-        ArrayList<MeetingRoom> meetingRooms = mApiService.getMeetingRooms();
-        String roomName = "";
-        ArrayList<String> roomNames = new ArrayList<>();
-        for (MeetingRoom meetingRoom : meetingRooms
-        ) {
-            roomNames.add(meetingRoom.getNameSpinner(roomName));
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, roomNames);
-        roomList.setAdapter(adapter);
-    }
 
     @OnClick(R.id.create)
     void addButton() {
         ArrayList<String> participants = formatParticipants(participantsInput);
         int roomId = roomList.getSelectedItemPosition();
-        MeetingRoom meetingRoomSelected = mApiService.getMeetingRooms().get(roomId);
         Date datePicked = formatDate(datePicker, timePicker);
-        Reservation newReservation = null;
-        newReservation = new Reservation(meetingRoomSelected.getRoomId(),
-                datePicked,
-                participants,
-                Objects.requireNonNull(nameInput.getEditText()).getText().toString(), R.color.red);
-        mApiService.createMeeting(newReservation);
+        String name = Objects.requireNonNull(nameInput.getEditText()).getText().toString();
+        viewModel.addReservation(roomId, datePicked, name, participants);
         finish();
     }
-
 
     private Date formatDate(DatePicker datePicker, TimePicker timePicker) {
         int year = datePicker.getYear();
@@ -122,11 +113,5 @@ public class AddReservationActivity extends AppCompatActivity {
     public static void navigate(Activity activity) {
         Intent intent = new Intent(activity, AddReservationActivity.class);
         ActivityCompat.startActivity(activity, intent, null);
-    }
-
-    @Subscribe
-    public void onRoomCheckAvailableEvent(RoomCheckAvailableEvent event) {
-        //TODO: réaction à l'évènement
-        //warning.setVisibility(View.VISIBLE);
     }
 }
