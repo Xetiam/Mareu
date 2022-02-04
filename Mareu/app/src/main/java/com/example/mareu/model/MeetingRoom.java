@@ -7,16 +7,12 @@ import java.util.Date;
 public class MeetingRoom {
     //Attributes
     private Integer roomId;
-    private ArrayList<String> participants;
-    private Date lastReservation;
-    private Boolean isVacancy;
+
+    private ArrayList<Reservation> reservations = new ArrayList<>();
 
     //Constructor
     public MeetingRoom(Integer roomId){
         this.roomId = roomId;
-        this.participants = new ArrayList();
-        this.lastReservation = new Date();
-        this.isVacancy = true;
     }
 
     //Getter/Setter
@@ -24,25 +20,27 @@ public class MeetingRoom {
         return this.roomId;
     }
 
-    public ArrayList<String> getParticipants(){
-        return this.participants;
+    public ArrayList<Reservation> getReservations() {
+        return reservations;
     }
 
-    public Date getLastReservation(){ return this.lastReservation; }
-
-    public Boolean getVacancy() {
-        return this.isVacancy;
+    public Boolean getVacancy(Date datePicked) {
+        for (Reservation reservation: reservations
+             ) {
+            if(datePicked.after(reservation.getMeetingDate()) && datePicked.before(reservation.getEndMeetingDate())){
+                return false;
+            }
+        }
+        return true;
     }
 
-    public void setVacancy(Boolean isVacancy){
-        this.isVacancy = isVacancy;
+    public String getNameSpinner(String roomName){
+        int position = this.getRoomId();
+        roomName = "Salle n°" + position;
+        return  roomName;
     }
 
-    public void setParticipants(ArrayList<String> participants){
-        this.participants = participants;
-    }
-
-    public void setLastReservation(Date lastReservation){
-        this.lastReservation = lastReservation;
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
     }
 }

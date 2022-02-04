@@ -21,6 +21,8 @@ public class DummyReservationApiService implements ReservationApiService {
 
     @Override
     public void deleteMeeting(Reservation reservation) {
+        int id = reservation.getRoomId();
+        meetingRooms.get(id).getReservations().remove(reservation);
         reservations.remove(reservation);
     }
 
@@ -28,11 +30,7 @@ public class DummyReservationApiService implements ReservationApiService {
     public void createMeeting(Reservation reservation) {
         int roomId = reservation.getRoomId();
         MeetingRoom meetingRoom = meetingRooms.get(roomId);
-        if(meetingRoom.getVacancy()){
-            meetingRoom.setVacancy(false);
-            meetingRoom.setLastReservation(reservation.getMeetingDate());
-            meetingRoom.setParticipants(reservation.getParticipants());
-        }
+        meetingRoom.addReservation(reservation);
         reservations.add(reservation);
     }
 }

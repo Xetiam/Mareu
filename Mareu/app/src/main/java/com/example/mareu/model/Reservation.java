@@ -35,10 +35,24 @@ public class Reservation implements Serializable {
     }
 
     public String getName() {
-        return this.name;
+        return this.name + " - " + this.roomId + " - " + this.getMeetingDate();
     }
 
     public int getColor() {
         return this.color;
+    }
+
+    public Date getEndMeetingDate() {
+        Date date = this.getMeetingDate();
+        int hour = date.getHours();
+        int minute = date.getMinutes();
+        if(minute>=14){
+            hour = +1;
+            minute = minute - 15;
+        }
+        else{
+            minute = minute + 45;
+        }
+        return new Date(date.getYear(), date.getMonth(), date.getDate(),hour,minute);
     }
 }
