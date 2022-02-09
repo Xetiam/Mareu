@@ -1,4 +1,4 @@
-package com.example.mareu.ui.adapter;
+package com.example.mareu.ui.list_reservation.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
