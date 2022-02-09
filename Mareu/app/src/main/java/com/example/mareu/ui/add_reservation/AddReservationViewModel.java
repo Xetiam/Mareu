@@ -20,7 +20,7 @@ public class AddReservationViewModel extends ViewModel {
     private ReservationApiService mApiService;
     private AddReservationState newState = new AddReservationState(false);
 
-    public AddReservationViewModel(ReservationApiService mApiService){
+    public AddReservationViewModel(ReservationApiService mApiService) {
         this.mApiService = mApiService;
         this._state.postValue(newState);
     }
@@ -54,19 +54,16 @@ public class AddReservationViewModel extends ViewModel {
     }
 
     public void initListener(String s, Boolean mailFormat) {
-        if(mailFormat){
-            if(Patterns.EMAIL_ADDRESS.matcher(s).matches()){
+        if (mailFormat) {
+            if (Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
                 newState.setMailValid(true);
-            }
-            else {
+            } else {
                 newState.setMailValid(false);
             }
-        }
-        else{
-            if(s.length() >= 5){
+        } else {
+            if (s.length() >= 5) {
                 newState.setNameValid(true);
-            }
-            else {
+            } else {
                 newState.setNameValid(false);
             }
         }

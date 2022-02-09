@@ -38,11 +38,11 @@
             android:id="@+id/warningPart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:src="@drawable/ic_baseline_info_24"
-            app:layout_constraintTop_toTopOf="@+id/participantsLyt"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/participantsLyt"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/participantsLyt" />
 
 
         <com.google.android.material.textfield.TextInputLayout

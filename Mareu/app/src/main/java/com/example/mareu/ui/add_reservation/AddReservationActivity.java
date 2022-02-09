@@ -1,7 +1,5 @@
 package com.example.mareu.ui.add_reservation;
 
-import static java.sql.DriverManager.println;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,17 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.mareu.R;
-import com.example.mareu.di.DI;
-import com.example.mareu.event.RoomCheckAvailableEvent;
 import com.example.mareu.factory.ViewModelFactory;
-import com.example.mareu.model.MeetingRoom;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 

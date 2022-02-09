@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.mareu.service.DummyMeetingRoomGenerator;
 import com.example.mareu.service.DummyReservationApiService;
 import com.example.mareu.service.ReservationApiService;
 import com.example.mareu.ui.add_reservation.AddReservationViewModel;

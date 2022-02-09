@@ -20,6 +20,7 @@ public class AddReservationState {
     public ArrayList<String> getRoomNames() {
         return roomNames;
     }
+
     public void setRoomNames(ArrayList<String> roomNames) {
         this.roomNames = roomNames;
     }
@@ -27,6 +28,7 @@ public class AddReservationState {
     public Boolean getMailValid() {
         return isMailValid;
     }
+
     public void setMailValid(Boolean mailValid) {
         isMailValid = mailValid;
     }
@@ -34,6 +36,7 @@ public class AddReservationState {
     public Boolean getNameValid() {
         return isNameValid;
     }
+
     public void setNameValid(Boolean nameValid) {
         isNameValid = nameValid;
     }
