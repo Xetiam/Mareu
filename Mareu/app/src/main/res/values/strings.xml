@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Mareu</string>
+    <string name="meetingName">Nom de réunion</string>
+    <string name="participants">Mail des participants</string>
+    <string name="submit">Valider</string>
 </resources>
