@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
 import com.example.mareu.event.DeleteReservationEvent;
+import com.example.mareu.factory.ViewModelFactory;
 import com.example.mareu.model.Reservation;
+import com.example.mareu.ui.add_reservation.AddReservationViewModel;
 import com.example.mareu.ui.list_reservation.adapter.ReservationRecyclerViewAdapter;
 import com.example.mareu.ui.add_reservation.AddReservationActivity;
 
@@ -37,9 +39,13 @@ public class ListReservationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(this), DividerItemDecoration.VERTICAL));
-        viewModel = new ListReservationViewModel(DI.getReservationApiService());
+        viewModel = retrieveViewModel();
         viewModel.state.observe(this, this::render);
         viewModel.initList();
+    }
+
+    private ListReservationViewModel retrieveViewModel() {
+        return ViewModelFactory.getInstance().obtainViewModel(ListReservationViewModel.class);
     }
 
     @Override

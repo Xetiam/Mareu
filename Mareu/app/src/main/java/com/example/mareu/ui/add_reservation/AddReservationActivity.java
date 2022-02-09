@@ -1,11 +1,16 @@
 package com.example.mareu.ui.add_reservation;
 
+import static java.sql.DriverManager.println;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
@@ -16,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
 import com.example.mareu.event.RoomCheckAvailableEvent;
+import com.example.mareu.factory.ViewModelFactory;
 import com.example.mareu.model.MeetingRoom;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,53 +53,87 @@ public class AddReservationActivity extends AppCompatActivity {
     MaterialButton addButton;
     @BindView(R.id.warning)
     ImageView warning;
+    @BindView(R.id.participantButton)
+    ImageButton partButton;
+    @BindView(R.id.warningPart)
+    ImageView warningPart;
 
     private AddReservationViewModel viewModel;
-
+    private ArrayList<String> participants = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation);
         ButterKnife.bind(this);
-        viewModel = new AddReservationViewModel(DI.getReservationApiService());
+        viewModel = retrieveViewModel();
         viewModel.state.observe(this, this::render);
-        ArrayList<String> roomNames = viewModel.initSpinner();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,roomNames);
-        roomList.setAdapter(adapter);
+        viewModel.initSpinner();
+        initListeners();
+    }
+
+    private void initListeners() {
         timePicker.setIs24HourView(true);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 Date datePicked = formatDate(datePicker, timePicker);
-                viewModel.isReservationValid(datePicked, roomList.getSelectedItemPosition(), formatParticipants(participantsInput));
+                viewModel.isReservationValid(datePicked, roomList.getSelectedItemPosition(), participants);
             }
         });
+        myListener(nameInput,false);
+        myListener(participantsInput,true);
+    }
 
+    private void myListener(TextInputLayout input, Boolean mailFormat) {
+        Objects.requireNonNull(input.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.initListener(s.toString(),mailFormat);
+            }
+        });
+    }
+
+    private AddReservationViewModel retrieveViewModel() {
+        return ViewModelFactory.getInstance().obtainViewModel(AddReservationViewModel.class);
     }
 
     private void render(AddReservationState addReservationState){
-        if(addReservationState instanceof AddReservationStateValidRerservation){
+        if(addReservationState.getValid()){
             addButton.setEnabled(true);
             warning.setVisibility(View.INVISIBLE);
         }
-        else if(addReservationState instanceof AddReservationStateInvalidRerservation){
+        else{
             addButton.setEnabled(false);
             warning.setVisibility(View.VISIBLE);
+            ArrayList<String> roomNames = addReservationState.getRoomNames();
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,roomNames);
+            roomList.setAdapter(adapter);
+        }
+        if(addReservationState.getMailValid()){
+            partButton.setEnabled(true);
+            if(!(participantsInput.getEditText().toString().length()==0)){
+                warningPart.setVisibility(View.INVISIBLE);
+            }
+        }
+        else {
+            partButton.setEnabled(false);
+            warningPart.setVisibility(View.VISIBLE);
         }
     }
 
-    private ArrayList<String> formatParticipants(TextInputLayout participantsInput) {
-        String[] temp = Objects.requireNonNull(participantsInput.getEditText()).getText().toString().split(" ");
-        ArrayList<String> participants = new ArrayList<>();
-        participants.addAll(Arrays.asList(temp));
-        return participants;
+    @OnClick(R.id.participantButton)
+    void participantButton(){
+        participants.add(Objects.requireNonNull(participantsInput.getEditText()).getText().toString());
+        participantsInput.getEditText().setText("");
     }
-
 
     @OnClick(R.id.create)
     void addButton() {
-        ArrayList<String> participants = formatParticipants(participantsInput);
         int roomId = roomList.getSelectedItemPosition();
         Date datePicked = formatDate(datePicker, timePicker);
         String name = Objects.requireNonNull(nameInput.getEditText()).getText().toString();

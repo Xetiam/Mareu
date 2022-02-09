@@ -15,7 +15,7 @@ public class ListReservationViewModel extends ViewModel {
     MutableLiveData<ListReservationState> state = new MutableLiveData<>();
 
     public ListReservationViewModel(ReservationApiService mApiService) {
-        this.mApiService = DI.getReservationApiService();
+        this.mApiService = mApiService;
         this.mReservations = mApiService.getReservation();
     }
 

@@ -1,7 +1,6 @@
 package com.example.mareu.ui.add_reservation;
 
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.util.Patterns;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,33 +13,22 @@ import com.example.mareu.service.ReservationApiService;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
 
 public class AddReservationViewModel extends ViewModel {
-    MutableLiveData<AddReservationState> state = new MutableLiveData<>();
+    private MutableLiveData<AddReservationState> _state = new MutableLiveData<>();
+    LiveData<AddReservationState> state = _state;
     private ReservationApiService mApiService;
+    private AddReservationState newState = new AddReservationState(false);
+
     public AddReservationViewModel(ReservationApiService mApiService){
         this.mApiService = mApiService;
-    }
-    public ArrayList<String> initSpinner() {
-        ArrayList<MeetingRoom> meetingRooms = mApiService.getMeetingRooms();
-        String roomName = "";
-        ArrayList<String> roomNames = new ArrayList<>();
-        for (MeetingRoom meetingRoom : meetingRooms
-        ) {
-            roomNames.add(meetingRoom.getNameSpinner(roomName));
-        }
-        return roomNames;
+        this._state.postValue(newState);
     }
 
     public void isReservationValid(Date datePicked, int roomId, ArrayList<String> participants) {
         MeetingRoom meetingRoom = mApiService.getMeetingRooms().get(roomId);
-        if(meetingRoom.getVacancy(datePicked)){
-            this.state.postValue(new AddReservationStateValidRerservation());
-        }
-        else{
-            this.state.postValue(new AddReservationStateInvalidRerservation());
-        }
+        this._state.postValue(new AddReservationState(meetingRoom.getVacancy(datePicked)));
+
     }
 
     public void addReservation(int roomId, Date datePicked, String name, ArrayList<String> participants) {
@@ -51,5 +39,37 @@ public class AddReservationViewModel extends ViewModel {
                 participants,
                 name, R.color.red);
         mApiService.createMeeting(newReservation);
+    }
+
+    public void initSpinner() {
+        ArrayList<MeetingRoom> meetingRooms = mApiService.getMeetingRooms();
+        String roomName = "";
+        ArrayList<String> roomNames = new ArrayList<>();
+        for (MeetingRoom meetingRoom : meetingRooms
+        ) {
+            roomNames.add(meetingRoom.getNameSpinner(roomName));
+        }
+        newState.setRoomNames(roomNames);
+        this._state.postValue(newState);
+    }
+
+    public void initListener(String s, Boolean mailFormat) {
+        if(mailFormat){
+            if(Patterns.EMAIL_ADDRESS.matcher(s).matches()){
+                newState.setMailValid(true);
+            }
+            else {
+                newState.setMailValid(false);
+            }
+        }
+        else{
+            if(s.length() >= 5){
+                newState.setNameValid(true);
+            }
+            else {
+                newState.setNameValid(false);
+            }
+        }
+        this._state.postValue(newState);
     }
 }

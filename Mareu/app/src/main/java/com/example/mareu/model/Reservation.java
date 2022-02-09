@@ -60,7 +60,7 @@ public class Reservation implements Serializable {
         Date date = this.getMeetingDate();
         int hour = date.getHours();
         int minute = date.getMinutes();
-        if(minute<=14){
+        if(minute<=15){
             hour = hour - 1;
             minute = minute + 15;
         }
