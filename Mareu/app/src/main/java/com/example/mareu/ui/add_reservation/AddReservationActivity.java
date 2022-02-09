@@ -52,6 +52,8 @@ public class AddReservationActivity extends AppCompatActivity {
 
     private AddReservationViewModel viewModel;
     private ArrayList<String> participants = new ArrayList<>();
+    private Date datePicked = new Date();
+    private  ArrayList<String> roomNames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,22 +61,22 @@ public class AddReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_reservation);
         ButterKnife.bind(this);
         viewModel = retrieveViewModel();
-        viewModel.state.observe(this, this::render);
         viewModel.initSpinner();
+        viewModel.state.observe(this, this::render);
         initListeners();
     }
 
     private void initListeners() {
+        myListener(nameInput,false);
+        myListener(participantsInput,true);
         timePicker.setIs24HourView(true);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                Date datePicked = formatDate(datePicker, timePicker);
+                datePicked = formatDate(datePicker, timePicker);
                 viewModel.isReservationValid(datePicked, roomList.getSelectedItemPosition(), participants);
             }
         });
-        myListener(nameInput,false);
-        myListener(participantsInput,true);
     }
 
     private void myListener(TextInputLayout input, Boolean mailFormat) {
@@ -86,6 +88,9 @@ public class AddReservationActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 viewModel.initListener(s.toString(),mailFormat);
+                if(!mailFormat){
+                    viewModel.isReservationValid(datePicked, roomList.getSelectedItemPosition(), participants);
+                }
             }
         });
     }
@@ -95,33 +100,35 @@ public class AddReservationActivity extends AppCompatActivity {
     }
 
     private void render(AddReservationState addReservationState){
-        if(addReservationState.getValid()){
+        //TODO : ajouter la gestion du warningName
+        if(addReservationState.getNameValid() && addReservationState.getValid()){
             addButton.setEnabled(true);
             warning.setVisibility(View.INVISIBLE);
         }
         else{
             addButton.setEnabled(false);
             warning.setVisibility(View.VISIBLE);
-            ArrayList<String> roomNames = addReservationState.getRoomNames();
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,roomNames);
-            roomList.setAdapter(adapter);
         }
         if(addReservationState.getMailValid()){
             partButton.setEnabled(true);
-            if(!(participantsInput.getEditText().toString().length()==0)){
-                warningPart.setVisibility(View.INVISIBLE);
-            }
+            warningPart.setVisibility(View.INVISIBLE);
         }
-        else {
+        else{
             partButton.setEnabled(false);
             warningPart.setVisibility(View.VISIBLE);
         }
-    }
 
+        roomNames = addReservationState.getRoomNames();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, roomNames);
+        roomList.setAdapter(adapter);
+        addReservationState.setSpinnerInit(true);
+    }
+    //TODO : Ajouter un onClick pour les différents warning pouvant bloqué la réservation
     @OnClick(R.id.participantButton)
     void participantButton(){
         participants.add(Objects.requireNonNull(participantsInput.getEditText()).getText().toString());
         participantsInput.getEditText().setText("");
+        viewModel.isReservationValid(datePicked, roomList.getSelectedItemPosition(), participants);
     }
 
     @OnClick(R.id.create)

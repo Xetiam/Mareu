@@ -6,6 +6,8 @@ public class AddReservationState {
     private Boolean isValid = false;
     private Boolean isMailValid = false;
     private Boolean isNameValid = false;
+
+    private Boolean isSpinnerInit = false;
     private ArrayList<String> roomNames = new ArrayList<>();
 
     public AddReservationState(Boolean isValid) {
@@ -39,5 +41,16 @@ public class AddReservationState {
 
     public void setNameValid(Boolean nameValid) {
         isNameValid = nameValid;
+    }
+
+    public Boolean getSpinnerInit() {
+        return isSpinnerInit;
+    }
+    public void setSpinnerInit(Boolean spinnerInit) {
+        isSpinnerInit = spinnerInit;
+    }
+
+    public void setValid(Boolean vacancy) {
+        this.isValid = vacancy;
     }
 }

@@ -27,8 +27,10 @@ public class AddReservationViewModel extends ViewModel {
 
     public void isReservationValid(Date datePicked, int roomId, ArrayList<String> participants) {
         MeetingRoom meetingRoom = mApiService.getMeetingRooms().get(roomId);
-        this._state.postValue(new AddReservationState(meetingRoom.getVacancy(datePicked)));
-
+        if(participants.size() > 1 && newState.getNameValid()){
+            newState.setValid(meetingRoom.getVacancy(datePicked));
+            this._state.postValue(newState);
+        }
     }
 
     public void addReservation(int roomId, Date datePicked, String name, ArrayList<String> participants) {
@@ -43,11 +45,10 @@ public class AddReservationViewModel extends ViewModel {
 
     public void initSpinner() {
         ArrayList<MeetingRoom> meetingRooms = mApiService.getMeetingRooms();
-        String roomName = "";
         ArrayList<String> roomNames = new ArrayList<>();
         for (MeetingRoom meetingRoom : meetingRooms
         ) {
-            roomNames.add(meetingRoom.getNameSpinner(roomName));
+            roomNames.add(meetingRoom.getNameSpinner(""+meetingRoom.getRoomId()));
         }
         newState.setRoomNames(roomNames);
         this._state.postValue(newState);

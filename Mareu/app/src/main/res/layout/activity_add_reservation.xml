@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--TODO : Ajouter le warning pour le nom -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -38,11 +39,11 @@
             android:id="@+id/warningPart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_info_24"
             android:visibility="invisible"
-            app:layout_constraintEnd_toStartOf="@+id/participantsLyt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/participantsLyt" />
+            android:src="@drawable/ic_baseline_info_24"
+            app:layout_constraintTop_toBottomOf="@+id/participantButton"
+            app:layout_constraintStart_toStartOf="@+id/participantButton"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -50,7 +51,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/warningPart"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/participantButton"
             app:layout_constraintTop_toBottomOf="@+id/roomList">
 
@@ -60,7 +61,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/participants"
-                android:inputType="text" />
+                android:inputType="text"
+                android:layout_marginBottom="@dimen/long_margin"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
@@ -94,7 +96,6 @@
             android:id="@+id/time_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
             android:timePickerMode="spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
