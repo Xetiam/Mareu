@@ -16,14 +16,4 @@ public class DummyMeetingRoomGenerator {
         }
         return meetingRooms;
     }
-
-    public static ArrayList<Reservation> generateReservation() {
-        ArrayList<Reservation> reservations = new ArrayList<>();
-        Reservation newReservation = new Reservation(0,
-                new Date(),
-                new ArrayList<>(),
-                "test", R.color.red);
-        reservations.add(newReservation);
-        return reservations;
-    }
 }

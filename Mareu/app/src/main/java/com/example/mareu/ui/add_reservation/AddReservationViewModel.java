@@ -18,22 +18,32 @@ public class AddReservationViewModel extends ViewModel {
     private MutableLiveData<AddReservationState> _state = new MutableLiveData<>();
     LiveData<AddReservationState> state = _state;
     private ReservationApiService mApiService;
-    private AddReservationState newState = new AddReservationState(false);
+    //private AddReservationState newState = new AddReservationState(false);
+
+    private  ArrayList<String> roomNames = new ArrayList<>();
+    private Date datePicked = new Date();
+    private ArrayList<String> participants = new ArrayList<>();
+
+    private Boolean isValid = false;
+    private Boolean isMailValid = false;
+    private Boolean isNameValid = false;
+    private Boolean isSpinnerInit = false;
+
 
     public AddReservationViewModel(ReservationApiService mApiService) {
         this.mApiService = mApiService;
-        this._state.postValue(newState);
+        this._state.postValue(new AddReservationStateInit(roomNames));
     }
 
-    public void isReservationValid(Date datePicked, int roomId, ArrayList<String> participants) {
+    public void isReservationValid(Date datePicked, int roomId) {
         MeetingRoom meetingRoom = mApiService.getMeetingRooms().get(roomId);
-        if(participants.size() > 1 && newState.getNameValid()){
-            newState.setValid(meetingRoom.getVacancy(datePicked));
-            this._state.postValue(newState);
+        if(participants.size() > 1 && isNameValid){
+            isValid = meetingRoom.getVacancy(datePicked);
+            this._state.postValue(new AddReservationStateUpdated(isValid, isMailValid, isNameValid, roomNames));
         }
     }
 
-    public void addReservation(int roomId, Date datePicked, String name, ArrayList<String> participants) {
+    public void addReservation(int roomId, Date datePicked, String name) {
         MeetingRoom meetingRoomSelected = mApiService.getMeetingRooms().get(roomId);
         Reservation newReservation = null;
         newReservation = new Reservation(meetingRoomSelected.getRoomId(),
@@ -50,24 +60,38 @@ public class AddReservationViewModel extends ViewModel {
         ) {
             roomNames.add(meetingRoom.getNameSpinner(""+meetingRoom.getRoomId()));
         }
-        newState.setRoomNames(roomNames);
-        this._state.postValue(newState);
+        if(!isSpinnerInit){
+            isSpinnerInit = true;
+            this._state.postValue(new AddReservationStateInit(roomNames));
+        }
     }
 
     public void initListener(String s, Boolean mailFormat) {
         if (mailFormat) {
             if (Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
-                newState.setMailValid(true);
+                isMailValid = true;
             } else {
-                newState.setMailValid(false);
+                isMailValid = false;
             }
         } else {
             if (s.length() >= 5) {
-                newState.setNameValid(true);
+                isNameValid = true;
             } else {
-                newState.setNameValid(false);
+                isNameValid = false;
             }
         }
-        this._state.postValue(newState);
+        this._state.postValue(new AddReservationStateUpdated(isValid, isMailValid, isNameValid, roomNames));
+    }
+
+    public void addParticipant(String newParticipant) {
+        this.participants.add(newParticipant);
+        this._state.postValue(new AddReservationStateAddPart(participants));
+    }
+
+    public void deleteParticipant(String participant) {
+        if(participants.contains(participant)){
+            participants.remove(participant);
+            this._state.postValue(new AddReservationStateDeletePart(participant));
+        }
     }
 }

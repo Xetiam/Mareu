@@ -3,20 +3,13 @@ package com.example.mareu.ui.add_reservation;
 import java.util.ArrayList;
 
 public class AddReservationState {
-    private Boolean isValid = false;
-    private Boolean isMailValid = false;
-    private Boolean isNameValid = false;
 
-    private Boolean isSpinnerInit = false;
+}
+class AddReservationStateInit extends AddReservationState {
     private ArrayList<String> roomNames = new ArrayList<>();
 
-    public AddReservationState(Boolean isValid) {
-        this.isValid = isValid;
+    public AddReservationStateInit(ArrayList<String> roomNames) {
         this.roomNames = roomNames;
-    }
-
-    public Boolean getValid() {
-        return isValid;
     }
 
     public ArrayList<String> getRoomNames() {
@@ -26,31 +19,46 @@ public class AddReservationState {
     public void setRoomNames(ArrayList<String> roomNames) {
         this.roomNames = roomNames;
     }
+}
+class AddReservationStateUpdated extends AddReservationState {
+    private Boolean isValid = false;
+    private Boolean isMailValid = false;
+    private Boolean isNameValid = false;
+    private ArrayList<String> roomNames = new ArrayList<>();
+
+    public AddReservationStateUpdated(Boolean isValid, Boolean isMailValid, Boolean isNameValid, ArrayList<String> roomNames) {
+        this.isValid = isValid;
+        this.isMailValid = isMailValid;
+        this.isNameValid = isNameValid;
+        this.roomNames = roomNames;
+    }
+
+    public Boolean getValid() {
+        return isValid;
+    }
 
     public Boolean getMailValid() {
         return isMailValid;
     }
 
-    public void setMailValid(Boolean mailValid) {
-        isMailValid = mailValid;
-    }
 
     public Boolean getNameValid() {
         return isNameValid;
     }
-
-    public void setNameValid(Boolean nameValid) {
-        isNameValid = nameValid;
+}
+class AddReservationStateAddPart extends AddReservationState {
+    private ArrayList<String> participants = new ArrayList<>();
+    public AddReservationStateAddPart(ArrayList<String> participants) {
+        this.participants = participants;
+    }
+}
+class AddReservationStateDeletePart extends AddReservationState{
+    private String participant = "";
+    public AddReservationStateDeletePart(String participant) {
+        this.participant = participant;
     }
 
-    public Boolean getSpinnerInit() {
-        return isSpinnerInit;
-    }
-    public void setSpinnerInit(Boolean spinnerInit) {
-        isSpinnerInit = spinnerInit;
-    }
-
-    public void setValid(Boolean vacancy) {
-        this.isValid = vacancy;
+    public String getParticipant() {
+        return participant;
     }
 }

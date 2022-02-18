@@ -3,6 +3,7 @@ package com.example.mareu.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class MeetingRoom {
     //Attributes
@@ -44,5 +45,18 @@ public class MeetingRoom {
 
     public void addReservation(Reservation reservation) {
         this.reservations.add(reservation);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MeetingRoom that = (MeetingRoom) o;
+        return Objects.equals(roomId, that.roomId) && Objects.equals(reservations, that.reservations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomId, reservations);
     }
 }
