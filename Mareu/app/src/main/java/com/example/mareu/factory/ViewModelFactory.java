@@ -36,7 +36,6 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }
 
-
     public static ViewModelFactory getInstance() {
         if (viewModelFactory == null) {
             synchronized (ViewModelFactory.class) {

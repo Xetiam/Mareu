@@ -13,9 +13,9 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nameLyt"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/warningName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -27,6 +27,17 @@
                 android:hint="@string/meetingName"
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/warningName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_margin"
+            android:src="@drawable/ic_baseline_info_24"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/nameLyt"
+            app:layout_constraintTop_toTopOf="@+id/nameLyt" />
 
         <Spinner
             android:id="@+id/roomList"
@@ -40,18 +51,17 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_info_24"
             android:visibility="invisible"
-            app:layout_constraintEnd_toStartOf="@+id/participantsLyt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/participantsLyt" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/participantButton"
+            app:layout_constraintTop_toBottomOf="@+id/participantButton" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/participantsLyt"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/warningPart"
             app:layout_constraintEnd_toStartOf="@+id/participantButton"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/roomList">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -60,33 +70,51 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/participants"
-                android:inputType="text" />
+                android:inputType="text"
+                android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
             android:id="@+id/participantButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_add_box_24"
             android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@+id/roomList"
+            android:src="@drawable/ic_baseline_add_box_24"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/roomList" />
+        <TextView
+            android:id="@+id/listTitle"
+            app:layout_constraintTop_toBottomOf="@+id/participantsLyt"
+            app:layout_constraintBottom_toTopOf="@+id/participantsList"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:textSize="@dimen/long_Text"
+            android:text="@string/listTitle" />
+        <LinearLayout
+            android:id="@+id/participantsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/listTitle">
+        </LinearLayout>
 
         <DatePicker
             android:id="@+id/date_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/long_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/participantsLyt" />
+            app:layout_constraintTop_toBottomOf="@+id/participantsList" />
 
         <ImageView
             android:id="@+id/warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:src="@drawable/ic_baseline_warning_amber_24"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/time_picker"
             app:layout_constraintEnd_toStartOf="@+id/time_picker" />
 
@@ -94,13 +122,11 @@
             android:id="@+id/time_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
             android:timePickerMode="spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/date_picker" />
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/create"
@@ -114,7 +140,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/time_picker" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
