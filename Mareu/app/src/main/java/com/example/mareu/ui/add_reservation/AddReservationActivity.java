@@ -29,8 +29,6 @@ import com.example.mareu.factory.ViewModelFactory;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
@@ -136,6 +134,7 @@ public class AddReservationActivity extends AppCompatActivity {
                 warningName.setVisibility(View.INVISIBLE);
             } else {
                 warningName.setVisibility(View.VISIBLE);
+                nameInput.setBackgroundColor(getResources().getColor(R.color.red));
             }
         }
         if (addReservationState instanceof AddReservationStateInit) {

@@ -2,6 +2,7 @@ package com.example.mareu.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -36,7 +37,7 @@ public class Reservation implements Serializable {
     }
 
     public String getName() {
-        return this.name + " - " + this.roomId + " - " + this.getMeetingDate();
+        return this.name;
     }
 
     public int getColor() {
@@ -82,5 +83,20 @@ public class Reservation implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(roomId, meetingDate, participants, name, color);
+    }
+
+    public String getMeetingDateString() {
+        Calendar today = Calendar.getInstance();
+        if(getMeetingDate().getDate() == today.get(Calendar.DAY_OF_MONTH) && getMeetingDate().getMonth() == today.get(Calendar.MONTH) && getMeetingDate().getYear() == today.get(Calendar.YEAR)){
+            if(getMeetingDate().getMinutes() >= 10){
+                return getMeetingDate().getHours() + "h" + getMeetingDate().getMinutes();
+            }
+            else{
+                return getMeetingDate().getHours() + "h0" + getMeetingDate().getMinutes();
+            }
+        }
+        else{
+            return String.valueOf(getMeetingDate().getDate()) + "/" + String.valueOf(getMeetingDate().getMonth()) + "/" + String.valueOf(getMeetingDate().getYear());
+        }
     }
 }

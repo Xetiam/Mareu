@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Mareu</string>
+    <!--CardView : Reservation-->
+    <string name="card_view_format">%s - %s - %s</string>
     <!--AddReservationActivity-->
     <string name="meetingName">Nom de réunion</string>
     <string name="participants">Mail des participants</string>

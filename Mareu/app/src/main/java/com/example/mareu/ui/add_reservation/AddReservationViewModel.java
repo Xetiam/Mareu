@@ -1,5 +1,6 @@
 package com.example.mareu.ui.add_reservation;
 
+import android.graphics.Color;
 import android.util.Patterns;
 
 import androidx.lifecycle.LiveData;
@@ -9,10 +10,12 @@ import androidx.lifecycle.ViewModel;
 import com.example.mareu.R;
 import com.example.mareu.model.MeetingRoom;
 import com.example.mareu.model.Reservation;
+import com.example.mareu.service.DummyMeetingRoomGenerator;
 import com.example.mareu.service.ReservationApiService;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 public class AddReservationViewModel extends ViewModel {
     private MutableLiveData<AddReservationState> _state = new MutableLiveData<>();
@@ -20,7 +23,7 @@ public class AddReservationViewModel extends ViewModel {
     private ReservationApiService mApiService;
     //private AddReservationState newState = new AddReservationState(false);
 
-    private  ArrayList<String> roomNames = new ArrayList<>();
+    private ArrayList<String> roomNames = new ArrayList<>();
     private Date datePicked = new Date();
     private ArrayList<String> participants = new ArrayList<>();
 
@@ -37,7 +40,7 @@ public class AddReservationViewModel extends ViewModel {
 
     public void isReservationValid(Date datePicked, int roomId) {
         MeetingRoom meetingRoom = mApiService.getMeetingRooms().get(roomId);
-        if(participants.size() > 1 && isNameValid){
+        if (participants.size() > 1 && isNameValid) {
             isValid = meetingRoom.getVacancy(datePicked);
             this._state.postValue(new AddReservationStateUpdated(isValid, isMailValid, isNameValid, roomNames));
         }
@@ -49,7 +52,7 @@ public class AddReservationViewModel extends ViewModel {
         newReservation = new Reservation(meetingRoomSelected.getRoomId(),
                 datePicked,
                 participants,
-                name, R.color.red);
+                name, getRandomColor());
         mApiService.createMeeting(newReservation);
     }
 
@@ -58,15 +61,16 @@ public class AddReservationViewModel extends ViewModel {
         ArrayList<String> roomNames = new ArrayList<>();
         for (MeetingRoom meetingRoom : meetingRooms
         ) {
-            roomNames.add(meetingRoom.getNameSpinner(""+meetingRoom.getRoomId()));
+            roomNames.add(meetingRoom.getNameSpinner("" + DummyMeetingRoomGenerator.MeetingRoomName.getName(meetingRoom.getRoomId())));
         }
-        if(!isSpinnerInit){
+        if (!isSpinnerInit) {
             isSpinnerInit = true;
             this._state.postValue(new AddReservationStateInit(roomNames));
         }
     }
 
     public void initListener(String s, Boolean mailFormat) {
+
         if (mailFormat) {
             if (Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
                 isMailValid = true;
@@ -84,14 +88,23 @@ public class AddReservationViewModel extends ViewModel {
     }
 
     public void addParticipant(String newParticipant) {
-        this.participants.add(newParticipant);
-        this._state.postValue(new AddReservationStateAddPart(participants));
+        if (this.participants.contains(newParticipant)) {
+            this._state.postValue(new AddReservationStateUpdated(isValid,false,isNameValid,roomNames));
+        } else {
+            this.participants.add(newParticipant);
+            this._state.postValue(new AddReservationStateAddPart(participants));
+        }
     }
 
     public void deleteParticipant(String participant) {
-        if(participants.contains(participant)){
+        if (participants.contains(participant)) {
             participants.remove(participant);
             this._state.postValue(new AddReservationStateDeletePart(participant));
         }
+    }
+
+    public int getRandomColor(){
+        Random rnd = new Random();
+        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 }

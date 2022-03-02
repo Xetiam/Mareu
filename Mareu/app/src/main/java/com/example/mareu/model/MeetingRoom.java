@@ -38,9 +38,9 @@ public class MeetingRoom {
     }
 
     public String getNameSpinner(String roomName){
-        int position = this.getRoomId();
-        roomName = "Salle n°" + position;
-        return  roomName;
+        String spinnerRow;
+        spinnerRow = "Salle " + roomName;
+        return  spinnerRow;
     }
 
     public void addReservation(Reservation reservation) {

@@ -68,7 +68,7 @@ public class ListReservationActivity extends AppCompatActivity {
         if(listReservationState instanceof ListReservationUpdated){
             ListReservationUpdated state = (ListReservationUpdated) listReservationState;
             ArrayList<Reservation> reservations = state.reservations;
-            ReservationRecyclerViewAdapter adapter = new ReservationRecyclerViewAdapter(reservations);
+            ReservationRecyclerViewAdapter adapter = new ReservationRecyclerViewAdapter(reservations, this);
             mRecyclerView.setAdapter(adapter);
         }
     }
