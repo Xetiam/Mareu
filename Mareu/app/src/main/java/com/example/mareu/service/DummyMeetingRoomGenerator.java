@@ -26,9 +26,9 @@ public class DummyMeetingRoomGenerator {
         ROOM_FOUR("Donkey Kong", 4),
         ROOM_FIVE("Kirby", 5),
         ROOM_SIX("MetaKnight", 6),
-        ROOM_SEVEN("Daisy", 7),
-        ROOM_EIGHT("Daisy", 8),
-        ROOM_NINE("Daisy", 9);
+        ROOM_SEVEN("Link", 7),
+        ROOM_EIGHT("Ganondorf", 8),
+        ROOM_NINE("Zelda", 9);
 
         private final String name;
         private final int id;

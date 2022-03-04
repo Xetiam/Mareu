@@ -33,4 +33,76 @@ public class ListReservationViewModel extends ViewModel {
         mApiService.deleteMeeting(reservation);
         state.postValue(new ListReservationUpdated(mReservations));
     }
+
+    public void sortByDate() {
+        ArrayList<Reservation> reservations = mReservations;
+        for (int i = 0; i < reservations.size() - 1; i++)
+        {
+            int index = i;
+            for (int j = i + 1; j < reservations.size(); j++)
+            {
+                if (reservations.get(j).getMeetingCalendar().before(reservations.get(index).getMeetingCalendar())){
+                    index = j;
+                }
+            }
+
+            Reservation min = reservations.get(index);
+            reservations.set(index,reservations.get(i));
+            reservations.set(i, min);
+        }
+        state.postValue(new ListReservationUpdated(reservations));
+    }
+
+    public void sortByRoom() {
+        sortByDate();
+        ArrayList<Reservation> reservations = mReservations;
+        for (int i = 0; i < reservations.size() - 1; i++)
+        {
+            int index = i;
+            for (int j = i + 1; j < reservations.size(); j++)
+            {
+                if (reservations.get(j).getRoomId() < reservations.get(index).getRoomId()){
+                    index = j;
+                }
+            }
+
+            Reservation min = reservations.get(index);
+            reservations.set(index,reservations.get(i));
+            reservations.set(i, min);
+        }
+        state.postValue(new ListReservationUpdated(reservations));
+    }
+
+    public void sortByCreation() {
+        ArrayList<Reservation> reservations = mReservations;
+        for (int i = 0; i < reservations.size() - 1; i++)
+        {
+            int index = i;
+            for (int j = i + 1; j < reservations.size(); j++)
+            {
+                if (reservations.get(j).getCreationCalendar().before(reservations.get(index).getCreationCalendar())){
+                    index = j;
+                }
+            }
+
+            Reservation min = reservations.get(index);
+            reservations.set(index,reservations.get(i));
+            reservations.set(i, min);
+        }
+        state.postValue(new ListReservationUpdated(mReservations));
+    }
+
+    public void sort(int sortMode) {
+        switch(sortMode){
+            case 0:
+                sortByDate();
+                break;
+            case 1:
+                sortByRoom();
+                break;
+            case 2:
+                sortByCreation();
+                break;
+        }
+    }
 }

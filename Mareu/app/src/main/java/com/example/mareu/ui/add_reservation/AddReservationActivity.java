@@ -234,7 +234,6 @@ public class AddReservationActivity extends AppCompatActivity {
 
     @OnClick(R.id.participantButton)
     void participantButton() {
-        //TODO : Finaliser l'affichage des participants
         viewModel.addParticipant(Objects.requireNonNull(participantsInput.getEditText()).getText().toString());
     }
 

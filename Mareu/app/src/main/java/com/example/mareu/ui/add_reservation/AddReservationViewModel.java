@@ -52,7 +52,8 @@ public class AddReservationViewModel extends ViewModel {
         newReservation = new Reservation(meetingRoomSelected.getRoomId(),
                 datePicked,
                 participants,
-                name, getRandomColor());
+                name, getRandomColor(),
+                Calendar.getInstance());
         mApiService.createMeeting(newReservation);
     }
 

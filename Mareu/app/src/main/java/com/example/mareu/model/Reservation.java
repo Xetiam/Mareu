@@ -21,6 +21,7 @@ public class Reservation implements Serializable {
         this.participants = participants;
         this.name = name;
         this.color = color;
+        this.creationCalendar = creationDate;
     }
 
     //Getter
@@ -37,6 +38,9 @@ public class Reservation implements Serializable {
     }
 
     public String getName() {
+        if(this.name.length() > 20){
+            return this.name.substring(0,19)+"...";
+        }
         return this.name;
     }
 
@@ -98,5 +102,9 @@ public class Reservation implements Serializable {
         else{
             return String.valueOf(getMeetingDate().getDate()) + "/" + String.valueOf(getMeetingDate().getMonth()) + "/" + String.valueOf(getMeetingDate().getYear());
         }
+    }
+
+    public Calendar getCreationCalendar() {
+        return creationCalendar;
     }
 }

@@ -1,8 +1,14 @@
 package com.example.mareu.ui.list_reservation;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +33,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ListReservationActivity extends AppCompatActivity {
+    private static final int SORT_MODE_DATE = 0;
+    private static final int SORT_MODE_ROOM = 1;
+    private static final int SORT_MODE_CREATION = 2;
     @BindView(R.id.container)
     RecyclerView mRecyclerView;
 
@@ -41,11 +50,35 @@ public class ListReservationActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(this), DividerItemDecoration.VERTICAL));
         viewModel = retrieveViewModel();
         viewModel.state.observe(this, this::render);
-        viewModel.initList();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
     private ListReservationViewModel retrieveViewModel() {
         return ViewModelFactory.getInstance().obtainViewModel(ListReservationViewModel.class);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.by_date:
+                viewModel.sort(SORT_MODE_DATE);
+                return true;
+            case R.id.by_room:
+                viewModel.sort(SORT_MODE_ROOM);
+                return true;
+            case R.id.by_creation:
+                viewModel.sort(SORT_MODE_CREATION);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
