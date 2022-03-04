@@ -50,7 +50,7 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
         Reservation reservation = mReservations.get(position);
         holder.mReservationName.setText(String.format(mContext.getString(R.string.card_view_format),
                 reservation.getName(),
-                reservation.getMeetingDateString(),
+                reservation.getMeetingDateCorrectlyFormatted(),
                 mAPiService.getMeetingRoomName(reservation.getRoomId())));
         String participantsString = reservation.getParticipants().toString().substring(1,reservation.getParticipants().toString().length()-1);
         holder.mReservationColor.setColorFilter(reservation.getColor(), PorterDuff.Mode.MULTIPLY);

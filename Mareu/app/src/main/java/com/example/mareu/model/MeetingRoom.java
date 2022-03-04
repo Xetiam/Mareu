@@ -1,23 +1,22 @@
 package com.example.mareu.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class MeetingRoom {
     //Attributes
-    private Integer roomId;
+    private final Integer roomId;
 
-    private ArrayList<Reservation> reservations = new ArrayList<>();
+    private final ArrayList<Reservation> reservations = new ArrayList<>();
 
     //Constructor
-    public MeetingRoom(Integer roomId){
+    public MeetingRoom(Integer roomId) {
         this.roomId = roomId;
     }
 
     //Getter/Setter
-    public int getRoomId(){
+    public int getRoomId() {
         return this.roomId;
     }
 
@@ -25,22 +24,22 @@ public class MeetingRoom {
         return reservations;
     }
 
-    public Boolean getVacancy(Date datePicked) {
-        for (Reservation reservation: reservations
-             ) {
-            if((datePicked.after(reservation.getMeetingDate()) && datePicked.before(reservation.getEndMeetingDate())) ||
-                    (datePicked.after(reservation.getBeforeMeetingDate()) && datePicked.before(reservation.getMeetingDate())) ||
-                    (datePicked.equals(reservation.getMeetingDate()))){
+    public Boolean getVacancy(Calendar datePicked) {
+        for (Reservation reservation : reservations
+        ) {
+            if ((datePicked.after(reservation.getMeetingCalendar()) && datePicked.before(reservation.getEndMeetingDate())) ||
+                    (datePicked.after(reservation.getBeforeMeetingDate()) && datePicked.before(reservation.getMeetingCalendar())) ||
+                    (datePicked.equals(reservation.getMeetingCalendar()))) {
                 return false;
             }
         }
         return true;
     }
 
-    public String getNameSpinner(String roomName){
+    public String getNameSpinner(String roomName) {
         String spinnerRow;
         spinnerRow = "Salle " + roomName;
-        return  spinnerRow;
+        return spinnerRow;
     }
 
     public void addReservation(Reservation reservation) {

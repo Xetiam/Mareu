@@ -30,6 +30,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -209,13 +210,15 @@ public class AddReservationActivity extends AppCompatActivity {
         return newButton;
     }
 
-    private Date formatDate(DatePicker datePicker, TimePicker timePicker) {
+    private Calendar formatDate(DatePicker datePicker, TimePicker timePicker) {
         int year = datePicker.getYear();
         int month = datePicker.getMonth();
         int day = datePicker.getDayOfMonth();
         int hour = timePicker.getCurrentHour();
         int minute = timePicker.getCurrentMinute();
-        return new Date(year, month, day, hour, minute);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day, hour, minute);
+        return calendar;
     }
 
     public static void navigate(Activity activity) {
@@ -240,7 +243,7 @@ public class AddReservationActivity extends AppCompatActivity {
     @OnClick(R.id.create)
     void addButton() {
         int roomId = roomList.getSelectedItemPosition();
-        Date datePicked = formatDate(datePicker, timePicker);
+        Calendar datePicked = formatDate(datePicker, timePicker);
         String name = Objects.requireNonNull(nameInput.getEditText()).getText().toString();
         viewModel.addReservation(roomId, datePicked, name);
         finish();

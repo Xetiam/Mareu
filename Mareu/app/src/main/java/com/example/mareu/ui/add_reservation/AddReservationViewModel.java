@@ -14,7 +14,7 @@ import com.example.mareu.service.DummyMeetingRoomGenerator;
 import com.example.mareu.service.ReservationApiService;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Random;
 
 public class AddReservationViewModel extends ViewModel {
@@ -24,7 +24,7 @@ public class AddReservationViewModel extends ViewModel {
     //private AddReservationState newState = new AddReservationState(false);
 
     private ArrayList<String> roomNames = new ArrayList<>();
-    private Date datePicked = new Date();
+    private Calendar datePicked = Calendar.getInstance();
     private ArrayList<String> participants = new ArrayList<>();
 
     private Boolean isValid = false;
@@ -38,7 +38,7 @@ public class AddReservationViewModel extends ViewModel {
         this._state.postValue(new AddReservationStateInit(roomNames));
     }
 
-    public void isReservationValid(Date datePicked, int roomId) {
+    public void isReservationValid(Calendar datePicked, int roomId) {
         MeetingRoom meetingRoom = mApiService.getMeetingRooms().get(roomId);
         if (participants.size() > 1 && isNameValid) {
             isValid = meetingRoom.getVacancy(datePicked);
@@ -46,7 +46,7 @@ public class AddReservationViewModel extends ViewModel {
         }
     }
 
-    public void addReservation(int roomId, Date datePicked, String name) {
+    public void addReservation(int roomId, Calendar datePicked, String name) {
         MeetingRoom meetingRoomSelected = mApiService.getMeetingRooms().get(roomId);
         Reservation newReservation = null;
         newReservation = new Reservation(meetingRoomSelected.getRoomId(),

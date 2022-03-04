@@ -1,23 +1,25 @@
 package com.example.mareu.model;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
 public class Reservation implements Serializable {
-    //Attributes
-    private int roomId;
-    private Date meetingDate;
-    private ArrayList<String> participants;
     private final String name;
-    private int color;
+    //Attributes
+    private final int roomId;
+    private final Calendar meetingCalendar;
+    private final ArrayList<String> participants;
+    private final int color;
+    private final Calendar creationCalendar;
 
     //Constructor
-    public Reservation(int roomId, Date meetingDate, ArrayList<String> participants, String name, int color){
+    public Reservation(int roomId, Calendar meetingDate, ArrayList<String> participants, String name, int color, Calendar creationDate) {
         this.roomId = roomId;
-        this.meetingDate = meetingDate;
+        this.meetingCalendar = meetingDate;
         this.participants = participants;
         this.name = name;
         this.color = color;
@@ -25,15 +27,15 @@ public class Reservation implements Serializable {
     }
 
     //Getter
-    public int getRoomId(){
+    public int getRoomId() {
         return this.roomId;
     }
 
-    public Date getMeetingDate(){
-        return this.meetingDate;
+    public Calendar getMeetingCalendar() {
+        return this.meetingCalendar;
     }
 
-    public ArrayList<String> getParticipants(){
+    public ArrayList<String> getParticipants() {
         return this.participants;
     }
 
@@ -48,32 +50,39 @@ public class Reservation implements Serializable {
         return this.color;
     }
 
-    public Date getEndMeetingDate() {
-        Date date = this.getMeetingDate();
-        int hour = date.getHours();
-        int minute = date.getMinutes();
-        if(minute>=14){
+    public Calendar getEndMeetingDate() {
+        Calendar date = this.getMeetingCalendar();
+        int hour = date.get(Calendar.HOUR_OF_DAY);
+        int minute = date.get(Calendar.MINUTE);
+        if (minute >= 14) {
             hour = hour + 1;
             minute = minute - 15;
-        }
-        else{
+        } else {
             minute = minute + 45;
         }
-        return new Date(date.getYear(), date.getMonth(), date.getDate(),hour,minute);
+
+        return getCalendar(date, hour, minute);
     }
 
-    public Date getBeforeMeetingDate() {
-        Date date = this.getMeetingDate();
-        int hour = date.getHours();
-        int minute = date.getMinutes();
-        if(minute<=15){
+    public Calendar getBeforeMeetingDate() {
+        Calendar date = this.getMeetingCalendar();
+        int hour = date.get(Calendar.HOUR_OF_DAY);
+        int minute = date.get(Calendar.MINUTE);
+        if (minute <= 15) {
             hour = hour - 1;
             minute = minute + 15;
-        }
-        else{
+        } else {
             minute = minute - 45;
         }
-        return new Date(date.getYear(), date.getMonth(), date.getDate(),hour,minute);
+
+        return getCalendar(date, hour, minute);
+    }
+
+    @NonNull
+    private Calendar getCalendar(Calendar date, int hour, int minute) {
+        Calendar beforeMeetingDate = Calendar.getInstance();
+        beforeMeetingDate.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH), hour, minute);
+        return beforeMeetingDate;
     }
 
     @Override
@@ -81,27 +90,64 @@ public class Reservation implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
-        return roomId == that.roomId && color == that.color && Objects.equals(meetingDate, that.meetingDate) && Objects.equals(participants, that.participants) && Objects.equals(name, that.name);
+        return roomId == that.roomId && color == that.color && Objects.equals(meetingCalendar, that.meetingCalendar) && Objects.equals(participants, that.participants) && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomId, meetingDate, participants, name, color);
+        return Objects.hash(roomId, meetingCalendar, participants, name, color);
     }
 
-    public String getMeetingDateString() {
+    public String getMeetingDateCorrectlyFormatted() {
         Calendar today = Calendar.getInstance();
-        if(getMeetingDate().getDate() == today.get(Calendar.DAY_OF_MONTH) && getMeetingDate().getMonth() == today.get(Calendar.MONTH) && getMeetingDate().getYear() == today.get(Calendar.YEAR)){
-            if(getMeetingDate().getMinutes() >= 10){
-                return getMeetingDate().getHours() + "h" + getMeetingDate().getMinutes();
-            }
-            else{
-                return getMeetingDate().getHours() + "h0" + getMeetingDate().getMinutes();
-            }
+
+        if (isSameDay(today) &&
+                isSameMonth(today) &&
+                isSameYear(today)) {
+            return formatCalendarForToday();
+        } else {
+            return formatWithDayOfMeeting();
         }
-        else{
-            return String.valueOf(getMeetingDate().getDate()) + "/" + String.valueOf(getMeetingDate().getMonth()) + "/" + String.valueOf(getMeetingDate().getYear());
+    }
+
+    @NonNull
+    private String formatCalendarForToday() {
+        if (isTwoDigitsMinutes()) {
+            return formatTwoDigitsMinutes();
+        } else {
+            return formatOneDigitMinutes();
         }
+    }
+
+    @NonNull
+    private String formatWithDayOfMeeting() {
+        return getMeetingCalendar().get(Calendar.DAY_OF_MONTH) + "/" + getMeetingCalendar().get(Calendar.MONTH) + "/" + getMeetingCalendar().get(Calendar.YEAR);
+    }
+
+    @NonNull
+    private String formatOneDigitMinutes() {
+        return this.meetingCalendar.get(Calendar.HOUR_OF_DAY) + "h0" + getMeetingCalendar().get(Calendar.MINUTE);
+    }
+
+    @NonNull
+    private String formatTwoDigitsMinutes() {
+        return this.meetingCalendar.get(Calendar.HOUR_OF_DAY) + "h" + getMeetingCalendar().get(Calendar.MINUTE);
+    }
+
+    private boolean isTwoDigitsMinutes() {
+        return this.meetingCalendar.get(Calendar.MINUTE) >= 10;
+    }
+
+    private boolean isSameYear(Calendar today) {
+        return this.meetingCalendar.get(Calendar.YEAR) == today.get(Calendar.YEAR);
+    }
+
+    private boolean isSameMonth(Calendar today) {
+        return meetingCalendar.get(Calendar.MONTH) == today.get(Calendar.MONTH);
+    }
+
+    private boolean isSameDay(Calendar today) {
+        return meetingCalendar.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH);
     }
 
     public Calendar getCreationCalendar() {
