@@ -11,4 +11,13 @@
     <!--Alert Dialog : Réservation-->
     <string name="alert_title">Champ(s) invalide(s)</string>
     <string name="alert_message">"Un ou plusieurs champs sont invalides.\nRègle de validation :\n\tNom : 5 caractères minimum\n\tParticipant : un email par participant valide et compter au moins deux participants\n\tDate : La salle doit être libre à l'heure choisis"</string>
+
+    <!--Menu de tri-->
+    <string name="menu_title">Mode de tri</string>
+    <string name="menu_date">Trier par date</string>
+    <string name="menu_room">Trier par salle</string>
+    <string name="menu_creation">Trier par date de création</string>
+
+    <!--ViewReservationDetail-->
+    <string name="title_list">Liste des participants :</string>
 </resources>

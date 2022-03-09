@@ -27,7 +27,7 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ViewReservationViewModel.class)) {
-            return null;//(T) new ViewReservationViewModel(reservationApiService);
+            return (T) new ViewReservationViewModel(reservationApiService);
         } else if (modelClass.isAssignableFrom(AddReservationViewModel.class)) {
             return (T) new AddReservationViewModel(reservationApiService);
         } else if (modelClass.isAssignableFrom(ListReservationViewModel.class)) {

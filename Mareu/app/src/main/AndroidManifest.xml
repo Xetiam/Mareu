@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.add_reservation.AddReservationActivity"/>
+        <activity android:name=".ui.view_reservation_detail.ViewReservationDetailActivity"/>
     </application>
 
 </manifest>

@@ -1,4 +1,84 @@
 package com.example.mareu.ui.view_reservation_detail;
 
-public class ViewReservationDetailActivity {
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import com.example.mareu.R;
+import com.example.mareu.factory.ViewModelFactory;
+import com.example.mareu.model.Reservation;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+
+public class ViewReservationDetailActivity extends AppCompatActivity {
+    public static final String RESERVATION = "reservation";
+    @BindView(R.id.detail_reservation_name)
+    TextView reservationName;
+    @BindView(R.id.detail_reservation_color)
+    ImageView reservationColor;
+    @BindView(R.id.participate_button)
+    FloatingActionButton partButton;
+    @BindView(R.id.detail_participants_list)
+    TextView partList;
+    @BindView(R.id.detail_date_picked)
+    TextView datePicked;
+
+    private ViewReservationViewModel viewModel;
+    private Reservation mReservation;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_view_reservation_detail);
+        ButterKnife.bind(this);
+        Intent intent = getIntent();
+        Reservation mReservation = (Reservation) intent.getExtras().get(RESERVATION);
+        reservationName.setText(mReservation.getNameDetail());
+        reservationColor.setColorFilter(mReservation.getColor());
+        partList.setText(mReservation.getParticipantsFormated());
+        viewModel = retrieveViewModel();
+        viewModel.initReservation(mReservation);
+        viewModel.state.observe(this, this::render);
+        datePicked.setText(mReservation.getMeetingCalendarFormated());
+    }
+
+    private void render(ViewReservationState viewReservationState) {
+        if(viewReservationState instanceof ViewReservationStateListUpdated){
+            ViewReservationStateListUpdated state = (ViewReservationStateListUpdated) viewReservationState;
+            partList.setText(state.getFormatedListPart());
+            if(state.isMyMail){
+                partButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_remove_24));
+            }
+            else{
+                partButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_add_24));
+            }
+        }
+    }
+
+
+    @VisibleForTesting
+    private ViewReservationViewModel retrieveViewModel() {
+        return ViewModelFactory.getInstance().obtainViewModel(ViewReservationViewModel.class);
+    }
+
+    @OnClick(R.id.participate_button)
+    void setPartButton(){
+        viewModel.addMeToMeeting();
+    }
+
+    public static void navigateToDetail(Activity activity, Reservation reservation) {
+        Intent intent = new Intent(activity, ViewReservationDetailActivity.class);
+        intent.putExtra(RESERVATION, reservation);
+        ActivityCompat.startActivity(activity, intent, null);
+    }
 }

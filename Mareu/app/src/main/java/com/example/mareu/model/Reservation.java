@@ -1,5 +1,10 @@
 package com.example.mareu.model;
 
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
+
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
@@ -39,10 +44,23 @@ public class Reservation implements Serializable {
         return this.participants;
     }
 
+    public String getParticipantsFormated() {
+        String partListFormated = "";
+        for (String part: this.participants
+             ) {
+            partListFormated = partListFormated + "\t" + part + "\n";
+        }
+        
+        return partListFormated;
+    }
+    
     public String getName() {
         if(this.name.length() > 20){
             return this.name.substring(0,19)+"...";
         }
+        return this.name;
+    }
+    public String getNameDetail() {
         return this.name;
     }
 
@@ -121,7 +139,39 @@ public class Reservation implements Serializable {
 
     @NonNull
     private String formatWithDayOfMeeting() {
-        return getMeetingCalendar().get(Calendar.DAY_OF_MONTH) + "/" + getMeetingCalendar().get(Calendar.MONTH) + "/" + getMeetingCalendar().get(Calendar.YEAR);
+        String day = "";
+        String month = "";
+        if (isTwoDigitsMonth()) {
+            month =  formatTwoDigitsMonth();
+        } else {
+            month =  formatOneDigitMonth();
+        }
+        if (isTwoDigitsDay()) {
+            day =  formatTwoDigitsDay();
+        } else {
+            day =  formatOneDigitDay();
+        }
+        return day + "/" + month + "/" + meetingCalendar.get(Calendar.YEAR);
+    }
+
+    @NonNull
+    private String formatTwoDigitsMonth() {
+        return String.valueOf(this.meetingCalendar.get(Calendar.MONTH));
+    }
+
+   @NonNull
+    private String formatTwoDigitsDay() {
+        return String.valueOf(this.meetingCalendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    @NonNull
+    private String formatOneDigitMonth() {
+        return "0" + this.meetingCalendar.get(Calendar.MONTH);
+    }
+
+   @NonNull
+    private String formatOneDigitDay() {
+        return "0" + this.meetingCalendar.get(Calendar.DAY_OF_MONTH);
     }
 
     @NonNull
@@ -138,6 +188,14 @@ public class Reservation implements Serializable {
         return this.meetingCalendar.get(Calendar.MINUTE) >= 10;
     }
 
+    private boolean isTwoDigitsMonth() {
+        return this.meetingCalendar.get(Calendar.MONTH) >= 10;
+    }
+
+    private boolean isTwoDigitsDay() {
+        return this.meetingCalendar.get(Calendar.DAY_OF_MONTH) >= 10;
+    }
+
     private boolean isSameYear(Calendar today) {
         return this.meetingCalendar.get(Calendar.YEAR) == today.get(Calendar.YEAR);
     }
@@ -152,5 +210,12 @@ public class Reservation implements Serializable {
 
     public Calendar getCreationCalendar() {
         return creationCalendar;
+    }
+
+    public SpannableStringBuilder getMeetingCalendarFormated() {
+        SpannableStringBuilder builder = new SpannableStringBuilder("La réunion est prévue pour le : " + formatWithDayOfMeeting() + " à " + formatCalendarForToday());
+        builder.setSpan(new StyleSpan(Typeface.BOLD), 31, 31+formatWithDayOfMeeting().length(), 0);
+        builder.setSpan(new StyleSpan(Typeface.BOLD), 34+formatWithDayOfMeeting().length(),34+formatWithDayOfMeeting().length() + formatCalendarForToday().length() , 0);
+        return builder;
     }
 }

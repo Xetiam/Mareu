@@ -2,9 +2,7 @@ package com.example.mareu.ui.add_reservation;
 
 import java.util.ArrayList;
 
-public class AddReservationState {
-
-}
+public class AddReservationState {}
 class AddReservationStateInit extends AddReservationState {
     private ArrayList<String> roomNames = new ArrayList<>();
 

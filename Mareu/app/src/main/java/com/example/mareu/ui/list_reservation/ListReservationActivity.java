@@ -1,24 +1,21 @@
 package com.example.mareu.ui.list_reservation;
 
+import static com.example.mareu.ui.list_reservation.ListReservationViewModel.*;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.R;
-import com.example.mareu.di.DI;
 import com.example.mareu.event.DeleteReservationEvent;
 import com.example.mareu.factory.ViewModelFactory;
 import com.example.mareu.model.Reservation;
-import com.example.mareu.ui.add_reservation.AddReservationViewModel;
 import com.example.mareu.ui.list_reservation.adapter.ReservationRecyclerViewAdapter;
 import com.example.mareu.ui.add_reservation.AddReservationActivity;
 
@@ -33,13 +30,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ListReservationActivity extends AppCompatActivity {
-    private static final int SORT_MODE_DATE = 0;
-    private static final int SORT_MODE_ROOM = 1;
-    private static final int SORT_MODE_CREATION = 2;
     @BindView(R.id.container)
     RecyclerView mRecyclerView;
 
     private ListReservationViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +60,15 @@ public class ListReservationActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.by_date:
-                viewModel.sort(SORT_MODE_DATE);
+                viewModel.sortingCall(SORT_MODE_DATE);
                 return true;
             case R.id.by_room:
-                viewModel.sort(SORT_MODE_ROOM);
+                viewModel.sortingCall(SORT_MODE_ROOM);
                 return true;
             case R.id.by_creation:
-                viewModel.sort(SORT_MODE_CREATION);
+                viewModel.sortingCall(SORT_MODE_CREATION);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -113,7 +107,7 @@ public class ListReservationActivity extends AppCompatActivity {
 
     @OnClick(R.id.add_reservation)
     void addNeighbour() {
-        AddReservationActivity.navigate(this);
+        AddReservationActivity.navigateToAddReservation(this);
     }
 
 

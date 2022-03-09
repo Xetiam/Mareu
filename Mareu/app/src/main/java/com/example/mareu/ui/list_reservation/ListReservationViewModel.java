@@ -3,7 +3,6 @@ package com.example.mareu.ui.list_reservation;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.mareu.di.DI;
 import com.example.mareu.model.Reservation;
 import com.example.mareu.service.ReservationApiService;
 
@@ -13,6 +12,9 @@ public class ListReservationViewModel extends ViewModel {
     private ReservationApiService mApiService;
     private ArrayList<Reservation> mReservations;
     MutableLiveData<ListReservationState> state = new MutableLiveData<>();
+    public static final int SORT_MODE_DATE = 0;
+    public static final int SORT_MODE_ROOM = 1;
+    public static final int SORT_MODE_CREATION = 2;
 
     public ListReservationViewModel(ReservationApiService mApiService) {
         this.mApiService = mApiService;
@@ -34,18 +36,17 @@ public class ListReservationViewModel extends ViewModel {
         state.postValue(new ListReservationUpdated(mReservations));
     }
 
-    public void sortByDate() {
+    public void sortingList(ListReservationCallback callback) {
         ArrayList<Reservation> reservations = mReservations;
         for (int i = 0; i < reservations.size() - 1; i++)
         {
             int index = i;
             for (int j = i + 1; j < reservations.size(); j++)
             {
-                if (reservations.get(j).getMeetingCalendar().before(reservations.get(index).getMeetingCalendar())){
+                if (callback.sortCondition(mReservations,index,j)){
                     index = j;
                 }
             }
-
             Reservation min = reservations.get(index);
             reservations.set(index,reservations.get(i));
             reservations.set(i, min);
@@ -53,55 +54,16 @@ public class ListReservationViewModel extends ViewModel {
         state.postValue(new ListReservationUpdated(reservations));
     }
 
-    public void sortByRoom() {
-        sortByDate();
-        ArrayList<Reservation> reservations = mReservations;
-        for (int i = 0; i < reservations.size() - 1; i++)
-        {
-            int index = i;
-            for (int j = i + 1; j < reservations.size(); j++)
-            {
-                if (reservations.get(j).getRoomId() < reservations.get(index).getRoomId()){
-                    index = j;
-                }
-            }
-
-            Reservation min = reservations.get(index);
-            reservations.set(index,reservations.get(i));
-            reservations.set(i, min);
-        }
-        state.postValue(new ListReservationUpdated(reservations));
-    }
-
-    public void sortByCreation() {
-        ArrayList<Reservation> reservations = mReservations;
-        for (int i = 0; i < reservations.size() - 1; i++)
-        {
-            int index = i;
-            for (int j = i + 1; j < reservations.size(); j++)
-            {
-                if (reservations.get(j).getCreationCalendar().before(reservations.get(index).getCreationCalendar())){
-                    index = j;
-                }
-            }
-
-            Reservation min = reservations.get(index);
-            reservations.set(index,reservations.get(i));
-            reservations.set(i, min);
-        }
-        state.postValue(new ListReservationUpdated(mReservations));
-    }
-
-    public void sort(int sortMode) {
+    public void sortingCall(int sortMode) {
         switch(sortMode){
-            case 0:
-                sortByDate();
+            case SORT_MODE_DATE:
+                sortingList((reservations, index, j) -> reservations.get(j).getMeetingCalendar().before(reservations.get(index).getMeetingCalendar()));
                 break;
-            case 1:
-                sortByRoom();
+            case SORT_MODE_ROOM:
+                sortingList((reservations, index, j) -> reservations.get(j).getRoomId() < reservations.get(index).getRoomId());
                 break;
-            case 2:
-                sortByCreation();
+            case SORT_MODE_CREATION:
+                sortingList((reservations, index, j) -> reservations.get(j).getCreationCalendar().before(reservations.get(index).getCreationCalendar()));
                 break;
         }
     }

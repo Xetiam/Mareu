@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
@@ -27,16 +28,17 @@ import androidx.core.app.ActivityCompat;
 import com.example.mareu.R;
 import com.example.mareu.factory.ViewModelFactory;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
 
 public class AddReservationActivity extends AppCompatActivity {
     @BindView(R.id.nameLyt)
@@ -82,11 +84,14 @@ public class AddReservationActivity extends AppCompatActivity {
         myListener(nameInput, false);
         myListener(participantsInput, true);
         timePicker.setIs24HourView(true);
-        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+        timePicker.setOnTimeChangedListener((view, hourOfDay, minute) -> viewModel.isReservationValid(formatDate(datePicker, timePicker), roomList.getSelectedItemPosition()));
+        roomList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.isReservationValid(formatDate(datePicker, timePicker), roomList.getSelectedItemPosition());
             }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
 
@@ -221,7 +226,7 @@ public class AddReservationActivity extends AppCompatActivity {
         return calendar;
     }
 
-    public static void navigate(Activity activity) {
+    public static void navigateToAddReservation(Activity activity) {
         Intent intent = new Intent(activity, AddReservationActivity.class);
         ActivityCompat.startActivity(activity, intent, null);
     }

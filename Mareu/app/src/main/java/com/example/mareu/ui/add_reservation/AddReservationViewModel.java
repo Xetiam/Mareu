@@ -21,8 +21,6 @@ public class AddReservationViewModel extends ViewModel {
     private MutableLiveData<AddReservationState> _state = new MutableLiveData<>();
     LiveData<AddReservationState> state = _state;
     private ReservationApiService mApiService;
-    //private AddReservationState newState = new AddReservationState(false);
-
     private ArrayList<String> roomNames = new ArrayList<>();
     private Calendar datePicked = Calendar.getInstance();
     private ArrayList<String> participants = new ArrayList<>();
@@ -79,7 +77,7 @@ public class AddReservationViewModel extends ViewModel {
                 isMailValid = false;
             }
         } else {
-            if (s.length() >= 5) {
+            if (s.length() >= 5 && s.length() <= 160) {
                 isNameValid = true;
             } else {
                 isNameValid = false;

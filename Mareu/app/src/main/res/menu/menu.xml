@@ -6,13 +6,13 @@
         android:icon="@drawable/ic_baseline_filter_list_24"
         android:orderInCategory="100"
         app:showAsAction="always"
-        android:title="Setting">
+        android:title="@string/menu_title">
         <menu>
-            <item android:title="Trier par date"
+            <item android:title="@string/menu_date"
                 android:id="@+id/by_date"/>
-            <item android:title="Trier par salle"
+            <item android:title="@string/menu_room"
                 android:id="@+id/by_room"/>
-            <item android:title="Trier par date de création"
+            <item android:title="@string/menu_creation"
                 android:id="@+id/by_creation"/>
         </menu>
     </item>

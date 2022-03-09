@@ -1,6 +1,8 @@
 package com.example.mareu.ui.list_reservation.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.example.mareu.di.DI;
 import com.example.mareu.event.DeleteReservationEvent;
 import com.example.mareu.model.Reservation;
 import com.example.mareu.service.ReservationApiService;
+import com.example.mareu.ui.view_reservation_detail.ViewReservationDetailActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,9 +62,7 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
             EventBus.getDefault().post(new DeleteReservationEvent(reservation));
         });
         holder.itemView.setOnClickListener(v -> {
-            //Intent intentViewReservation = new Intent();
-            //intentViewReservation.putExtra("reservation", reservation1);
-            //holder.mReservationColor.getContext().startActivity(intentViewReservation);
+            ViewReservationDetailActivity.navigateToDetail((Activity) mContext ,reservation);
         });
     }
 
