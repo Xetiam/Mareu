@@ -1,7 +1,6 @@
 package com.example.mareu.model;
 
 import android.graphics.Typeface;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 
@@ -20,15 +19,17 @@ public class Reservation implements Serializable {
     private final ArrayList<String> participants;
     private final int color;
     private final Calendar creationCalendar;
+    private final String subject;
 
     //Constructor
-    public Reservation(int roomId, Calendar meetingDate, ArrayList<String> participants, String name, int color, Calendar creationDate) {
+    public Reservation(int roomId, Calendar meetingDate, ArrayList<String> participants, String name, int color, Calendar creationDate, String subject) {
         this.roomId = roomId;
         this.meetingCalendar = meetingDate;
         this.participants = participants;
         this.name = name;
         this.color = color;
         this.creationCalendar = creationDate;
+        this.subject = subject;
     }
 
     //Getter
@@ -44,6 +45,12 @@ public class Reservation implements Serializable {
         return this.participants;
     }
 
+    @Override
+    public String toString() {
+        return
+                "Sujet de la réunion : '" + subject;
+    }
+
     public String getParticipantsFormated() {
         String partListFormated = "";
         for (String part: this.participants
@@ -55,8 +62,8 @@ public class Reservation implements Serializable {
     }
     
     public String getName() {
-        if(this.name.length() > 20){
-            return this.name.substring(0,19)+"...";
+        if(this.name.length() > 10){
+            return this.name.substring(0,10)+"...";
         }
         return this.name;
     }
@@ -217,5 +224,9 @@ public class Reservation implements Serializable {
         builder.setSpan(new StyleSpan(Typeface.BOLD), 31, 31+formatWithDayOfMeeting().length(), 0);
         builder.setSpan(new StyleSpan(Typeface.BOLD), 34+formatWithDayOfMeeting().length(),34+formatWithDayOfMeeting().length() + formatCalendarForToday().length() , 0);
         return builder;
+    }
+
+    public String getSubject() {
+        return subject;
     }
 }

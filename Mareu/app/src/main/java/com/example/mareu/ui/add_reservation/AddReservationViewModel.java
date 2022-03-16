@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.mareu.R;
 import com.example.mareu.model.MeetingRoom;
 import com.example.mareu.model.Reservation;
 import com.example.mareu.service.DummyMeetingRoomGenerator;
@@ -44,14 +43,14 @@ public class AddReservationViewModel extends ViewModel {
         }
     }
 
-    public void addReservation(int roomId, Calendar datePicked, String name) {
+    public void addReservation(int roomId, Calendar datePicked, String name, String subject) {
         MeetingRoom meetingRoomSelected = mApiService.getMeetingRooms().get(roomId);
         Reservation newReservation = null;
         newReservation = new Reservation(meetingRoomSelected.getRoomId(),
                 datePicked,
                 participants,
                 name, getRandomColor(),
-                Calendar.getInstance());
+                Calendar.getInstance(), subject);
         mApiService.createMeeting(newReservation);
     }
 
@@ -77,7 +76,7 @@ public class AddReservationViewModel extends ViewModel {
                 isMailValid = false;
             }
         } else {
-            if (s.length() >= 5 && s.length() <= 160) {
+            if (s.length() >= 5 && s.length() <= 84) {
                 isNameValid = true;
             } else {
                 isNameValid = false;
@@ -105,5 +104,9 @@ public class AddReservationViewModel extends ViewModel {
     public int getRandomColor(){
         Random rnd = new Random();
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+    }
+
+    public Boolean noInput(String s) {
+        return s.equals("");
     }
 }

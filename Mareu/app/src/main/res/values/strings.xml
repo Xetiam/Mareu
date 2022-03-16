@@ -5,6 +5,7 @@
     <!--AddReservationActivity-->
     <string name="meetingName">Nom de réunion</string>
     <string name="participants">Mail des participants</string>
+    <string name="subject">Sujet de la réunion</string>
     <string name="submit">Valider</string>
     <string name="listTitle">Participant :</string>
 

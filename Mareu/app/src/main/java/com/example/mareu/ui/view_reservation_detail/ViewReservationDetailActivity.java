@@ -19,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public class ViewReservationDetailActivity extends AppCompatActivity {
     public static final String RESERVATION = "reservation";
     @BindView(R.id.detail_reservation_name)
@@ -32,6 +31,8 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
     TextView partList;
     @BindView(R.id.detail_date_picked)
     TextView datePicked;
+    @BindView(R.id.detail_subject)
+    TextView subject;
 
     private ViewReservationViewModel viewModel;
     private Reservation mReservation;
@@ -42,7 +43,7 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_reservation_detail);
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        Reservation mReservation = (Reservation) intent.getExtras().get(RESERVATION);
+        mReservation = (Reservation) intent.getExtras().get(RESERVATION);
         reservationName.setText(mReservation.getNameDetail());
         reservationColor.setColorFilter(mReservation.getColor());
         partList.setText(mReservation.getParticipantsFormated());
@@ -50,21 +51,30 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
         viewModel.initReservation(mReservation);
         viewModel.state.observe(this, this::render);
         datePicked.setText(mReservation.getMeetingCalendarFormated());
+        subject.setText(mReservation.getSubject());
+        viewModel.isMyMail(mReservation.getParticipants());
     }
 
     private void render(ViewReservationState viewReservationState) {
         if(viewReservationState instanceof ViewReservationStateListUpdated){
             ViewReservationStateListUpdated state = (ViewReservationStateListUpdated) viewReservationState;
             partList.setText(state.getFormatedListPart());
-            if(state.isMyMail){
-                partButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_remove_24));
-            }
-            else{
-                partButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_add_24));
-            }
+            setDrawable(state.isMyMail());
+        }
+        if(viewReservationState instanceof ViewReservationStateInit){
+            ViewReservationStateInit state = (ViewReservationStateInit) viewReservationState;
+            setDrawable(state.isMyMail());
         }
     }
 
+    private void setDrawable(Boolean myMail) {
+        if(myMail){
+            partButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_remove_24));
+        }
+        else{
+            partButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_add_24));
+        }
+    }
 
     @VisibleForTesting
     private ViewReservationViewModel retrieveViewModel() {

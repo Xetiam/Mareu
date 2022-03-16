@@ -3,6 +3,7 @@ package com.example.mareu.ui.add_reservation;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,7 +29,6 @@ import androidx.core.app.ActivityCompat;
 import com.example.mareu.R;
 import com.example.mareu.factory.ViewModelFactory;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -38,13 +38,14 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemSelected;
 
 public class AddReservationActivity extends AppCompatActivity {
     @BindView(R.id.nameLyt)
     TextInputLayout nameInput;
     @BindView(R.id.participantsLyt)
     TextInputLayout participantsInput;
+    @BindView(R.id.subjectLyt)
+    TextInputLayout subjectInput;
     @BindView(R.id.roomList)
     Spinner roomList;
     @BindView(R.id.date_picker)
@@ -118,51 +119,83 @@ public class AddReservationActivity extends AppCompatActivity {
         return ViewModelFactory.getInstance().obtainViewModel(AddReservationViewModel.class);
     }
 
+    /**RENDERING : START**/
     private void render(AddReservationState addReservationState) {
         if (addReservationState instanceof AddReservationStateUpdated) {
-            AddReservationStateUpdated state = (AddReservationStateUpdated) addReservationState;
-            if (state.getNameValid() && state.getValid()) {
-                addButton.setEnabled(true);
-                warning.setVisibility(View.INVISIBLE);
-            } else {
-                addButton.setEnabled(false);
-                warning.setVisibility(View.VISIBLE);
-            }
-            if (state.getMailValid()) {
-                partButton.setEnabled(true);
-                warningPart.setVisibility(View.INVISIBLE);
-            } else {
-                partButton.setEnabled(false);
-                warningPart.setVisibility(View.VISIBLE);
-            }
-            if (state.getNameValid()) {
-                nameInput.setBackgroundColor(getResources().getColor(R.color.green));
-                warningName.setVisibility(View.INVISIBLE);
-            } else {
-                warningName.setVisibility(View.VISIBLE);
-                nameInput.setBackgroundColor(getResources().getColor(R.color.red));
-            }
+            renderUpdated(addReservationState);
         }
         if (addReservationState instanceof AddReservationStateInit) {
-            AddReservationStateInit state = (AddReservationStateInit) addReservationState;
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, state.getRoomNames());
-            roomList.setAdapter(adapter);
+            renderInit(addReservationState);
         }
         if(addReservationState instanceof AddReservationStateAddPart){
-            createPartView();
+            renderPartView();
         }
         if(addReservationState instanceof AddReservationStateDeletePart){
-            AddReservationStateDeletePart state = (AddReservationStateDeletePart) addReservationState;
-            for (TextView view: listPartView
-                 ) {
-                if(view.getText() == state.getParticipant()){
-                    partList.removeView((View) view.getParent());
-                }
+            renderDeletePart(addReservationState);
+        }
+    }
+
+    private void renderDeletePart(AddReservationState addReservationState) {
+        AddReservationStateDeletePart state = (AddReservationStateDeletePart) addReservationState;
+        for (TextView view: listPartView
+        ) {
+            if(view.getText() == state.getParticipant()){
+                partList.removeView((View) view.getParent());
             }
         }
     }
 
-    private void createPartView() {
+    private void renderInit(AddReservationState addReservationState) {
+        AddReservationStateInit state = (AddReservationStateInit) addReservationState;
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, state.getRoomNames());
+        roomList.setAdapter(adapter);
+    }
+
+    private void renderUpdated(AddReservationState addReservationState) {
+        AddReservationStateUpdated state = (AddReservationStateUpdated) addReservationState;
+        if (state.getValid()) {
+            addButton.setEnabled(true);
+            warning.setVisibility(View.INVISIBLE);
+        } else {
+            addButton.setEnabled(false);
+            warning.setVisibility(View.VISIBLE);
+        }
+        renderInputText(nameInput, warningName, state);
+        renderInputText(participantsInput,warningPart, state);
+    }
+
+    private void renderInputText(TextInputLayout input, ImageView imageView, AddReservationStateUpdated stateUpdated) {
+        if(viewModel.noInput(input.getEditText().getText().toString())){
+            input.setBackgroundColor(Color.TRANSPARENT);
+            imageView.setVisibility(View.INVISIBLE);
+        }
+        else{
+            switch (input.getId()){
+                case R.id.nameLyt:
+                    renderField(input, imageView, stateUpdated.getNameValid());
+                    break;
+                case R.id.participantsLyt:
+                    renderField(input,imageView,stateUpdated.getMailValid());
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + input.getId());
+            }
+
+        }
+    }
+
+    private void renderField(TextInputLayout input, ImageView imageView, Boolean isFieldValid) {
+        if(isFieldValid){
+            input.setBackgroundColor(getResources().getColor(R.color.green_faded));
+            imageView.setVisibility(View.INVISIBLE);
+        }
+        else{
+            imageView.setVisibility(View.VISIBLE);
+            input.setBackgroundColor(getResources().getColor(R.color.red_faded));
+        }
+    }
+
+    private void renderPartView() {
         ConstraintLayout part = new ConstraintLayout(this);
         part.setLayoutParams(new ConstraintLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -191,7 +224,7 @@ public class AddReservationActivity extends AppCompatActivity {
         listTitle.setVisibility(View.VISIBLE);
         viewModel.isReservationValid(formatDate(datePicker, timePicker), roomList.getSelectedItemPosition());
     }
-
+    /**RENDERING : END**/
 
     private TextView createTextView() {
         TextView partName = new TextView(this);
@@ -250,7 +283,8 @@ public class AddReservationActivity extends AppCompatActivity {
         int roomId = roomList.getSelectedItemPosition();
         Calendar datePicked = formatDate(datePicker, timePicker);
         String name = Objects.requireNonNull(nameInput.getEditText()).getText().toString();
-        viewModel.addReservation(roomId, datePicked, name);
+        String subject = Objects.requireNonNull(subjectInput.getEditText()).getText().toString();
+        viewModel.addReservation(roomId, datePicked, name, subject);
         finish();
     }
 }

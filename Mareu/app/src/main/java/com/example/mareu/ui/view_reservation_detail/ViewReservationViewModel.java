@@ -23,14 +23,15 @@ public class ViewReservationViewModel extends ViewModel {
     }
 
     public void addMeToMeeting() {
+        //TODO: problème dans la rotation
         Reservation mReservation = mReservations.get(index);
-        if(!mReservation.getParticipants().contains("Xetiam@gmail.com")){
-            mReservation.getParticipants().add("Xetiam@gmail.com");
+        if(!mReservation.getParticipants().contains(mApiService.getUserName())){
+            mReservation.getParticipants().add(mApiService.getUserName());
             mReservations.set(index, mReservation);
             this._state.postValue(new ViewReservationStateListUpdated(mReservation.getParticipantsFormated(), true));
         }
         else{
-            mReservation.getParticipants().remove("Xetiam@gmail.com");
+            mReservation.getParticipants().remove(mApiService.getUserName());
             mReservations.set(index, mReservation);
             this._state.postValue(new ViewReservationStateListUpdated(mReservation.getParticipantsFormated(), false));
         }
@@ -38,5 +39,9 @@ public class ViewReservationViewModel extends ViewModel {
 
     public void initReservation(Reservation mReservation) {
         this.index = mReservations.indexOf(mReservation);
+    }
+
+    public void isMyMail(ArrayList<String> participants) {
+        this._state.postValue(new ViewReservationStateInit(participants.contains(mApiService.getUserName())));
     }
 }

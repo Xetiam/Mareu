@@ -38,4 +38,9 @@ public class DummyReservationApiService implements ReservationApiService {
     public String getMeetingRoomName(int roomId) {
         return DummyMeetingRoomGenerator.MeetingRoomName.getName(roomId);
     }
+
+    @Override
+    public String getUserName() {
+        return "Xetiam@gmail.com";
+    }
 }

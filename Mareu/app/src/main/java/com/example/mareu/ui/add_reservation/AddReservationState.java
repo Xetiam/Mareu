@@ -6,8 +6,10 @@ public class AddReservationState {}
 class AddReservationStateInit extends AddReservationState {
     private ArrayList<String> roomNames = new ArrayList<>();
 
+
     public AddReservationStateInit(ArrayList<String> roomNames) {
         this.roomNames = roomNames;
+
     }
 
     public ArrayList<String> getRoomNames() {
@@ -17,6 +19,8 @@ class AddReservationStateInit extends AddReservationState {
     public void setRoomNames(ArrayList<String> roomNames) {
         this.roomNames = roomNames;
     }
+
+
 }
 class AddReservationStateUpdated extends AddReservationState {
     private Boolean isValid = false;
@@ -30,6 +34,7 @@ class AddReservationStateUpdated extends AddReservationState {
         this.isNameValid = isNameValid;
         this.roomNames = roomNames;
     }
+
 
     public Boolean getValid() {
         return isValid;
