@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -149,6 +150,7 @@ public class AddReservationActivity extends AppCompatActivity {
         AddReservationStateInit state = (AddReservationStateInit) addReservationState;
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, state.getRoomNames());
         roomList.setAdapter(adapter);
+        partButton.setEnabled(false);
     }
 
     private void renderUpdated(AddReservationState addReservationState) {
@@ -165,7 +167,8 @@ public class AddReservationActivity extends AppCompatActivity {
     }
 
     private void renderInputText(TextInputLayout input, ImageView imageView, AddReservationStateUpdated stateUpdated) {
-        if(viewModel.noInput(input.getEditText().getText().toString())){
+        String s = input.getEditText().getText().toString();
+        if(viewModel.noInput(s)){
             input.setBackgroundColor(Color.TRANSPARENT);
             imageView.setVisibility(View.INVISIBLE);
         }
@@ -176,6 +179,7 @@ public class AddReservationActivity extends AppCompatActivity {
                     break;
                 case R.id.participantsLyt:
                     renderField(input,imageView,stateUpdated.getMailValid());
+                    partButton.setEnabled(Patterns.EMAIL_ADDRESS.matcher(s).matches());
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + input.getId());
@@ -206,16 +210,16 @@ public class AddReservationActivity extends AppCompatActivity {
         part.addView(partName);
         part.addView(deletePart);
         set.clone(part);
-
-        //Contrainte du mail du participant
+        //Constraints participant mail
         set.connect(partName.getId(),ConstraintSet.START,ConstraintSet.PARENT_ID,ConstraintSet.START);
         set.connect(partName.getId(),ConstraintSet.TOP,ConstraintSet.PARENT_ID,ConstraintSet.TOP);
         set.connect(partName.getId(),ConstraintSet.BOTTOM,ConstraintSet.PARENT_ID,ConstraintSet.BOTTOM);
-        //Contrainte du bouton delete
+        //Constraints delete button
         set.connect(deletePart.getId(),ConstraintSet.END,ConstraintSet.PARENT_ID,ConstraintSet.END);
         set.connect(deletePart.getId(),ConstraintSet.TOP,ConstraintSet.PARENT_ID,ConstraintSet.TOP);
         set.connect(deletePart.getId(),ConstraintSet.BOTTOM,ConstraintSet.PARENT_ID,ConstraintSet.BOTTOM);
         set.applyTo(part);
+        deletePart.setId(viewModel.newDeleteId());
 
         partList.addView(part);
         partList.setVisibility(View.VISIBLE);
@@ -263,21 +267,22 @@ public class AddReservationActivity extends AppCompatActivity {
         Intent intent = new Intent(activity, AddReservationActivity.class);
         ActivityCompat.startActivity(activity, intent, null);
     }
+    @OnClick(R.id.warningName)
+    void warningButtonName(){
+        waningDisplay(R.string.alert_title_name, R.string.alert_message_name);
+    }
+    @OnClick(R.id.warningPart)
+    void warningButtonParticipant(){
+        waningDisplay(R.string.alert_title_participant, R.string.alert_message_participant);
+    }
     @OnClick(R.id.warning)
     void warningButton() {
-        AlertDialog alert = new AlertDialog.Builder(this).create();
-        alert.setTitle(R.string.alert_title);
-        alert.setMessage(getString(R.string.alert_message));
-        alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                (dialog, which) -> dialog.dismiss());
-        alert.show();
+        waningDisplay(R.string.alert_title_create, R.string.alert_message_create);
     }
-
     @OnClick(R.id.participantButton)
     void participantButton() {
         viewModel.addParticipant(Objects.requireNonNull(participantsInput.getEditText()).getText().toString());
     }
-
     @OnClick(R.id.create)
     void addButton() {
         int roomId = roomList.getSelectedItemPosition();
@@ -286,5 +291,13 @@ public class AddReservationActivity extends AppCompatActivity {
         String subject = Objects.requireNonNull(subjectInput.getEditText()).getText().toString();
         viewModel.addReservation(roomId, datePicked, name, subject);
         finish();
+    }
+    private void waningDisplay(int alertTitleId, int alertMessagId) {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle(getString(alertTitleId));
+        alert.setMessage(getString(alertMessagId));
+        alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                (dialog, which) -> dialog.dismiss());
+        alert.show();
     }
 }

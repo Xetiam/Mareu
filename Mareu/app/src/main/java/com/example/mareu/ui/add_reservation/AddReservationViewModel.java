@@ -68,7 +68,6 @@ public class AddReservationViewModel extends ViewModel {
     }
 
     public void initListener(String s, Boolean mailFormat) {
-
         if (mailFormat) {
             if (Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
                 isMailValid = true;
@@ -108,5 +107,9 @@ public class AddReservationViewModel extends ViewModel {
 
     public Boolean noInput(String s) {
         return s.equals("");
+    }
+
+    public int newDeleteId() {
+        return 100;
     }
 }

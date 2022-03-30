@@ -23,7 +23,6 @@ public class ViewReservationViewModel extends ViewModel {
     }
 
     public void addMeToMeeting() {
-        //TODO: problème dans la rotation
         Reservation mReservation = mReservations.get(index);
         if(!mReservation.getParticipants().contains(mApiService.getUserName())){
             mReservation.getParticipants().add(mApiService.getUserName());

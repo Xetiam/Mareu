@@ -62,8 +62,8 @@ public class Reservation implements Serializable {
     }
     
     public String getName() {
-        if(this.name.length() > 10){
-            return this.name.substring(0,10)+"...";
+        if(this.name.length() > 9){
+            return this.name.substring(0,9)+"...";
         }
         return this.name;
     }
@@ -227,6 +227,6 @@ public class Reservation implements Serializable {
     }
 
     public String getSubject() {
-        return subject;
+        return "Description du sujet de la réunion :\n\t" + subject;
     }
 }
