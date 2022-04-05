@@ -13,14 +13,17 @@ import com.example.mareu.service.ReservationApiService;
 
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.junit.runners.MethodSorters;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
 public class ReservationServiceTest {
 

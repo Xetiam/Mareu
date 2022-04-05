@@ -71,6 +71,7 @@ public class AddReservationActivity extends AppCompatActivity {
     private AddReservationViewModel viewModel;
     private ArrayList<TextView> listPartView = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +82,6 @@ public class AddReservationActivity extends AppCompatActivity {
         viewModel.state.observe(this, this::render);
         initListeners();
     }
-
     private void initListeners() {
         myListener(nameInput, false);
         myListener(participantsInput, true);

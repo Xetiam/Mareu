@@ -12,9 +12,14 @@ import com.example.mareu.model.Reservation;
 import com.example.mareu.service.DummyMeetingRoomGenerator;
 import com.example.mareu.service.ReservationApiService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class AddReservationViewModel extends ViewModel {
     private MutableLiveData<AddReservationState> _state = new MutableLiveData<>();
@@ -59,7 +64,7 @@ public class AddReservationViewModel extends ViewModel {
         ArrayList<String> roomNames = new ArrayList<>();
         for (MeetingRoom meetingRoom : meetingRooms
         ) {
-            roomNames.add(meetingRoom.getNameSpinner("" + DummyMeetingRoomGenerator.MeetingRoomName.getName(meetingRoom.getRoomId())));
+            roomNames.add(meetingRoom.getNameSpinner(DummyMeetingRoomGenerator.MeetingRoomName.getName(meetingRoom.getRoomId())));
         }
         if (!isSpinnerInit) {
             isSpinnerInit = true;
@@ -112,4 +117,6 @@ public class AddReservationViewModel extends ViewModel {
     public int newDeleteId() {
         return 100;
     }
+
+
 }
