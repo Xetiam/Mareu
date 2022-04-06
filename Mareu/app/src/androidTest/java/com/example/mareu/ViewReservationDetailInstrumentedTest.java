@@ -30,4 +30,5 @@ public class ViewReservationDetailInstrumentedTest {
     public void tearDown() {
         Intents.release();
     }
+
 }
