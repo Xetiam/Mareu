@@ -27,6 +27,7 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.example.mareu.ui.list_reservation.ListReservationActivity;
+import com.example.mareu.ui.view_reservation_detail.ViewReservationDetailActivity;
 
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -41,7 +42,6 @@ public class ListReservationInstrumentedTest {
     @Rule
     public ActivityScenarioRule<ListReservationActivity> mActivityRule = new ActivityScenarioRule<>(ListReservationActivity.class);
     private ListReservationActivity mActivity;
-
 
     @Before
     public void setUp() {
