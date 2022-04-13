@@ -1,22 +1,22 @@
 package com.example.mareu.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.Objects;
 
 public class MeetingRoom {
     //Attributes
-    private Integer roomId;
+    private final Integer roomId;
 
-    private ArrayList<Reservation> reservations = new ArrayList<>();
+    private final ArrayList<Reservation> reservations = new ArrayList<>();
 
     //Constructor
-    public MeetingRoom(Integer roomId){
+    public MeetingRoom(Integer roomId) {
         this.roomId = roomId;
     }
 
     //Getter/Setter
-    public int getRoomId(){
+    public int getRoomId() {
         return this.roomId;
     }
 
@@ -24,23 +24,38 @@ public class MeetingRoom {
         return reservations;
     }
 
-    public Boolean getVacancy(Date datePicked) {
-        for (Reservation reservation: reservations
-             ) {
-            if(datePicked.after(reservation.getMeetingDate()) && datePicked.before(reservation.getEndMeetingDate())){
+    public Boolean getVacancy(Calendar datePicked) {
+        for (Reservation reservation : reservations
+        ) {
+            if ((datePicked.after(reservation.getMeetingCalendar()) && datePicked.before(reservation.getEndMeetingDate())) ||
+                    (datePicked.after(reservation.getBeforeMeetingDate()) && datePicked.before(reservation.getMeetingCalendar())) ||
+                    (datePicked.equals(reservation.getMeetingCalendar()))) {
                 return false;
             }
         }
         return true;
     }
 
-    public String getNameSpinner(String roomName){
-        int position = this.getRoomId();
-        roomName = "Salle n°" + position;
-        return  roomName;
+    public String getNameSpinner(String roomName) {
+        String spinnerRow;
+        spinnerRow = "Salle " + roomName;
+        return spinnerRow;
     }
 
     public void addReservation(Reservation reservation) {
         this.reservations.add(reservation);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MeetingRoom that = (MeetingRoom) o;
+        return Objects.equals(roomId, that.roomId) && Objects.equals(reservations, that.reservations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomId, reservations);
     }
 }

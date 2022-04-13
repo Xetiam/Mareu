@@ -8,12 +8,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.AddReservationActivity">
+        tools:context=".ui.add_reservation.AddReservationActivity"
+        android:layout_marginHorizontal="@dimen/long_margin">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nameLyt"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,10 +24,19 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:hint="@string/meetingName"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/warningName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_margin"
+            android:src="@drawable/ic_baseline_info_24"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/nameLyt" />
 
         <Spinner
             android:id="@+id/roomList"
@@ -34,62 +44,119 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/nameLyt" />
 
+        <ImageView
+            android:id="@+id/warningPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_info_24"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/participantButton"
+            app:layout_constraintTop_toBottomOf="@+id/participantButton" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/participantsLyt"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/participantButton"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/roomList">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/participants"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:hint="@string/participants"
-                android:inputType="text" />
+                android:inputType="text"
+                android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <DatePicker
-            android:id="@+id/date_picker"
+        <ImageButton
+            android:id="@+id/participantButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
+            android:src="@drawable/ic_baseline_add_box_24"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/roomList" />
+
+        <TextView
+            android:id="@+id/listTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:layout_marginEnd="@dimen/long_margin"
+            android:text="@string/listTitle"
+            android:textSize="@dimen/long_Text"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/participantsList"
             app:layout_constraintTop_toBottomOf="@+id/participantsLyt" />
 
-        <ImageView
-            android:id="@+id/warning"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/participantsList"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:src="@drawable/ic_baseline_warning_amber_24"
-            app:layout_constraintBottom_toBottomOf="@+id/time_picker"
-            app:layout_constraintEnd_toStartOf="@+id/time_picker" />
-        <TimePicker
-            android:id="@+id/time_picker"
-            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/listTitle"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/subjectLyt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:timePickerMode="spinner"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date_picker" />
+            android:ems="10"
+            android:inputType="text"
+            android:singleLine="true"
+            app:layout_constraintTop_toBottomOf="@+id/participantsList">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/subject"
+                android:inputType="textMultiLine|text"
+                android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/create"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:enabled="false"
-            android:text="@string/submit"
-            app:cornerRadius="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time_picker" />
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/long_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subjectLyt" />
 
+    <ImageView
+        android:id="@+id/warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_warning_amber_24"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/time_picker"
+        app:layout_constraintEnd_toStartOf="@+id/time_picker" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_picker" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/create"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:enabled="false"
+        android:text="@string/submit"
+        app:cornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_picker" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>

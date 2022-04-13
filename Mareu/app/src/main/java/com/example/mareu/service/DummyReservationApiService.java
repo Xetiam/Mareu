@@ -33,4 +33,14 @@ public class DummyReservationApiService implements ReservationApiService {
         meetingRoom.addReservation(reservation);
         reservations.add(reservation);
     }
+
+    @Override
+    public String getMeetingRoomName(int roomId) {
+        return DummyMeetingRoomGenerator.MeetingRoomName.getName(roomId);
+    }
+
+    @Override
+    public String getUserName() {
+        return "Xetiam@gmail.com";
+    }
 }

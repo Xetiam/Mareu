@@ -4,6 +4,6 @@
     <dimen name="medium_margin">8dp</dimen>
     <dimen name="long_margin">16dp</dimen>
     <dimen name="short_Text">12sp</dimen>
-    <dimen name="medium_Text">14sp</dimen>
-    <dimen name="long_Text">16sp</dimen>
+    <dimen name="medium_Text">16sp</dimen>
+    <dimen name="long_Text">20sp</dimen>
 </resources>

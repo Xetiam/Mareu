@@ -10,4 +10,7 @@ public interface ReservationApiService {
     ArrayList<Reservation> getReservation();
     void deleteMeeting(Reservation reservation);
     void createMeeting(Reservation reservation);
+
+    String getMeetingRoomName(int roomId);
+    String getUserName();
 }

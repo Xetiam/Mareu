@@ -3,11 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/OpenClassroom/P4_Lepiller_Charly/Mareu/app/src/main/res/layout/activity_add_reservation.xml" value="0.36666666666666664" />
+        <entry key="..\:/OpenClassroom/P4_Lepiller_Charly/Mareu/app/src/main/res/layout/activity_add_reservation.xml" value="0.361474435196195" />
         <entry key="..\:/OpenClassroom/P4_Lepiller_Charly/Mareu/app/src/main/res/layout/activity_list_reservation.xml" value="0.25" />
+        <entry key="..\:/OpenClassroom/P4_Lepiller_Charly/Mareu/app/src/main/res/layout/activity_view_reservation_detail.xml" value="0.33" />
         <entry key="..\:/OpenClassroom/P4_Lepiller_Charly/Mareu/app/src/main/res/layout/cardview_reservation.xml" value="0.33" />
         <entry key="..\:/OpenClassroom/P4_Lepiller_Charly/Mareu/app/src/main/res/layout/spinner_dropdown_item.xml" value="0.20520833333333333" />
         <entry key="..\:/OpenClassroom/P4_Lepiller_Charly/Mareu/app/src/main/res/layout/spinner_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/OpenClassroom/P4_Lepiller_Charly/Mareu/app/src/main/res/menu/menu.xml" value="0.33" />
       </map>
     </option>
   </component>

@@ -1,6 +1,28 @@
 <resources>
     <string name="app_name">Mareu</string>
+    <!--CardView : Reservation-->
+    <string name="card_view_format">%s - %s - %s</string>
+    <!--AddReservationActivity-->
     <string name="meetingName">Nom de réunion</string>
     <string name="participants">Mail des participants</string>
+    <string name="subject">Sujet de la réunion (facultatif)</string>
     <string name="submit">Valider</string>
+    <string name="listTitle">Participant :</string>
+
+    <!--Alert Dialog : Réservation-->
+    <string name="alert_title_create">Champ(s) invalide(s)</string>
+    <string name="alert_message_create">"&#8226;Un ou plusieurs champs sont invalides.\n&#8226;La salle doit être libre à l'heure choisis et avoir 45 minutes sans réunions après l'heure sélectionnée."</string>
+    <string name="alert_title_name">Champ de nom de réunion invalide</string>
+    <string name="alert_message_name">"Le nom de la réunion que vous souhaitez créer doit comprendre entre 5 et 80 caractères."</string>
+    <string name="alert_title_participant">Champ de participant invalide</string>
+    <string name="alert_message_participant">"&#8226;Vous devez renseigner les mails des participants sous ce format :\n\t\t\t\t\t\t\txxxxxxxxx@xxx.xx\n&#8226; De plus pour créer la réunion vous devez renseigner au moins deux participants."</string>
+
+    <!--Menu de tri-->
+    <string name="menu_title">Mode de tri</string>
+    <string name="menu_date">Trier par date</string>
+    <string name="menu_room">Trier par salle</string>
+    <string name="menu_creation">Trier par date de création</string>
+
+    <!--ViewReservationDetail-->
+    <string name="title_list">Liste des participants :</string>
 </resources>

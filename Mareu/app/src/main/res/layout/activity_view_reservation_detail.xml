@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/detail_reservation_color"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/ic_baseline_circle_24"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/detail_reservation_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/short_margin"
+            android:maxWidth="150dp"
+            android:maxHeight="150dp"
+            android:singleLine="false"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/long_Text"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_reservation_color"
+            app:layout_constraintEnd_toEndOf="@+id/detail_reservation_color"
+            app:layout_constraintStart_toStartOf="@+id/detail_reservation_color"
+            app:layout_constraintTop_toTopOf="@+id/detail_reservation_color"
+            tools:text="Reservation Titre" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/participate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="@dimen/medium_margin"
+            android:src="@drawable/ic_baseline_add_24"
+            app:layout_constraintBottom_toTopOf="@+id/list_participants_Info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_reservation_color" />
+
+        <TextView
+            android:id="@+id/detail_date_picked"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/short_margin"
+            app:layout_constraintTop_toBottomOf="@+id/detail_reservation_color"
+            tools:text="Réunion prévu le : jj/mm/aaaa à hh:mm" />
+
+        <TextView
+            android:id="@+id/detail_title_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:text="@string/title_list"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/detail_date_picked"
+            tools:layout_editor_absoluteX="8dp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/list_participants_Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/short_margin"
+            android:layout_marginTop="@dimen/short_margin"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@id/detail_title_list">
+
+            <TextView
+                android:id="@+id/detail_participants_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/short_margin"
+                android:drawablePadding="16dp"
+                tools:text="\tParticipant 1\n\tParticipant 2\n..." />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/subject_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/short_margin"
+            android:layout_marginTop="@dimen/short_margin"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@id/list_participants_Info">
+
+            <TextView
+                android:id="@+id/detail_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/short_margin"
+                android:drawablePadding="16dp"
+
+                android:inputType="textMultiLine"
+                tools:text="Le sujet de la réunion : ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

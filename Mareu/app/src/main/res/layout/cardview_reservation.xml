@@ -6,27 +6,32 @@
     xmlns:tool="http://schemas.android.com/tools">
     <ImageView
         android:id="@+id/reservationColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/long_margin"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginVertical="@dimen/long_margin"
+        android:layout_marginStart="@dimen/long_margin"
         android:src="@drawable/ic_baseline_circle_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/info"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginStart="@dimen/medium_margin"
         app:layout_constraintTop_toTopOf="@+id/reservationColor"
         app:layout_constraintBottom_toBottomOf="@id/reservationColor"
-        app:layout_constraintStart_toEndOf="@id/reservationColor">
+        app:layout_constraintStart_toEndOf="@id/reservationColor"
+        app:layout_constraintEnd_toStartOf="@+id/item_list_delete_button">
         <TextView
             android:id="@+id/reservationTitle"
             android:textSize="@dimen/long_Text"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="end"
             tool:text="test"/>
         <TextView
             android:id="@+id/participantsList"
@@ -34,12 +39,15 @@
             android:layout_marginEnd="@dimen/medium_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="end"
             tool:text="test"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <ImageButton
         android:id="@+id/item_list_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/short_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/info"
         app:layout_constraintBottom_toBottomOf="@+id/info"
