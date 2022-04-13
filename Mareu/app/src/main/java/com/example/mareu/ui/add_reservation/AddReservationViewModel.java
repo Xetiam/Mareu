@@ -12,20 +12,17 @@ import com.example.mareu.model.Reservation;
 import com.example.mareu.service.DummyMeetingRoomGenerator;
 import com.example.mareu.service.ReservationApiService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class AddReservationViewModel extends ViewModel {
     private MutableLiveData<AddReservationState> _state = new MutableLiveData<>();
     LiveData<AddReservationState> state = _state;
     private ReservationApiService mApiService;
-    private ArrayList<String> roomNames = new ArrayList<>();
+
+    private  ArrayList<String> roomNames = new ArrayList<>();
     private Calendar datePicked = Calendar.getInstance();
     private ArrayList<String> participants = new ArrayList<>();
 
