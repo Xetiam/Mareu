@@ -9,6 +9,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
@@ -16,6 +17,7 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertTrue;
 
 import android.widget.DatePicker;
 
@@ -111,6 +113,7 @@ public class ListReservationInstrumentedTest {
         destroyMeetings();
     }
 
+    //ViewReservationDetail
     @Test
     public void E_shouldGoToDetail(){
         generatingMeeting("Reunion 1",1,2028, 5, 15);
@@ -118,7 +121,55 @@ public class ListReservationInstrumentedTest {
                 .atPositionOnView(0, R.id.reservationTitle))
                 .perform(click());
         onView(withId(R.id.detail_reservation_color)).check(matches(isDisplayed()));
+        onView(new RecyclerViewMatcher(R.id.container)
+                .atPositionOnView(0, R.id.reservationTitle));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(new RecyclerViewMatcher(R.id.container)
+                .atPositionOnView(0, R.id.item_list_delete_button))
+                .perform(click());
+    }
 
+    @Test
+    public void F_shouldFinishDetail(){
+        generatingMeeting("Reunion 1",1,2028, 5, 15);
+        onView(new RecyclerViewMatcher(R.id.container)
+                .atPositionOnView(0, R.id.reservationTitle))
+                .perform(click());
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(new RecyclerViewMatcher(R.id.container)
+                .atPositionOnView(0, R.id.reservationTitle))
+                .check(matches(withText("Reunion 1 - 15/04/2028 - Luigi")));
+        onView(new RecyclerViewMatcher(R.id.container)
+                .atPositionOnView(0, R.id.item_list_delete_button))
+                .perform(click());
+    }
+
+    @Test
+    public void G_shouldAddMyMailOnDetail(){
+        generatingMeeting("Reunion 1",1,2028, 5, 15);
+        onView(new RecyclerViewMatcher(R.id.container)
+                .atPositionOnView(0, R.id.reservationTitle))
+                .perform(click());
+        onView(withId(R.id.participate_button)).perform(click());
+        onView(withId(R.id.detail_participants_list)).check(matches(withText("\tparticipant1@mail.fr\n\tparticipant2@mail.fr\n\tXetiam@gmail.com\n")));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(new RecyclerViewMatcher(R.id.container)
+                .atPositionOnView(0, R.id.item_list_delete_button))
+                .perform(click());
+    }
+    @Test
+    public void H_shouldDeleteMyMailOnDetail(){
+        generatingMeeting("Reunion 1",1,2028, 5, 15);
+        onView(new RecyclerViewMatcher(R.id.container)
+                .atPositionOnView(0, R.id.reservationTitle))
+                .perform(click());
+        onView(withId(R.id.participate_button)).perform(click())
+                .perform(click());
+        onView(withId(R.id.detail_participants_list)).check(matches(withText("\tparticipant1@mail.fr\n\tparticipant2@mail.fr\n")));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(new RecyclerViewMatcher(R.id.container)
+                .atPositionOnView(0, R.id.item_list_delete_button))
+                .perform(click());
     }
 
     public void generatingMeetings() {

@@ -1,10 +1,12 @@
 package com.example.mareu.ui.view_reservation_detail;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +55,14 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
         datePicked.setText(mReservation.getMeetingCalendarFormated());
         subject.setText(mReservation.getSubject());
         viewModel.isMyMail(mReservation.getParticipants());
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void render(ViewReservationState viewReservationState) {
