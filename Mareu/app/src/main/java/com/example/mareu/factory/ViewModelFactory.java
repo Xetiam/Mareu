@@ -22,8 +22,6 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
         ViewModelFactory.reservationApiService = reservationApiService;
     }
 
-    @SuppressWarnings("unchecked")
-    @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ViewReservationViewModel.class)) {

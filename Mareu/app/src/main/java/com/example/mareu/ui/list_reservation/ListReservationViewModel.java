@@ -9,7 +9,7 @@ import com.example.mareu.service.ReservationApiService;
 import java.util.ArrayList;
 
 public class ListReservationViewModel extends ViewModel {
-    private ReservationApiService mApiService;
+    private final ReservationApiService mApiService;
     private ArrayList<Reservation> mReservations;
     MutableLiveData<ListReservationState> state = new MutableLiveData<>();
     public static final int SORT_MODE_DATE = 0;
@@ -25,8 +25,7 @@ public class ListReservationViewModel extends ViewModel {
         mReservations = mApiService.getReservation();
         if (mReservations != null) {
             state.postValue(new ListReservationUpdated(mReservations));
-        }
-        else{
+        } else {
             state.postValue(new ListReservationUpdated(new ArrayList<>()));
         }
     }
@@ -38,24 +37,22 @@ public class ListReservationViewModel extends ViewModel {
 
     public void sortingList(ListReservationCallback callback) {
         ArrayList<Reservation> reservations = mReservations;
-        for (int i = 0; i < reservations.size() - 1; i++)
-        {
+        for (int i = 0; i < reservations.size() - 1; i++) {
             int index = i;
-            for (int j = i + 1; j < reservations.size(); j++)
-            {
-                if (callback.sortCondition(mReservations,index,j)){
+            for (int j = i + 1; j < reservations.size(); j++) {
+                if (callback.sortCondition(mReservations, index, j)) {
                     index = j;
                 }
             }
             Reservation min = reservations.get(index);
-            reservations.set(index,reservations.get(i));
+            reservations.set(index, reservations.get(i));
             reservations.set(i, min);
         }
         state.postValue(new ListReservationUpdated(reservations));
     }
 
     public void sortingCall(int sortMode) {
-        switch(sortMode){
+        switch (sortMode) {
             case SORT_MODE_DATE:
                 sortingList((reservations, index, j) -> reservations.get(j).getMeetingCalendar().before(reservations.get(index).getMeetingCalendar()));
                 break;

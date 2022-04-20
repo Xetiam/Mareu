@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 public class ListReservationState {
 }
-class ListReservationUpdated extends ListReservationState{
+
+class ListReservationUpdated extends ListReservationState {
     public ArrayList<Reservation> reservations;
-    public ListReservationUpdated(ArrayList<Reservation> reservations){
+
+    public ListReservationUpdated(ArrayList<Reservation> reservations) {
         this.reservations = reservations;
     }
 }

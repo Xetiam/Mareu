@@ -1,6 +1,8 @@
 package com.example.mareu.ui.list_reservation;
 
-import static com.example.mareu.ui.list_reservation.ListReservationViewModel.*;
+import static com.example.mareu.ui.list_reservation.ListReservationViewModel.SORT_MODE_CREATION;
+import static com.example.mareu.ui.list_reservation.ListReservationViewModel.SORT_MODE_DATE;
+import static com.example.mareu.ui.list_reservation.ListReservationViewModel.SORT_MODE_ROOM;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,14 +18,13 @@ import com.example.mareu.R;
 import com.example.mareu.event.DeleteReservationEvent;
 import com.example.mareu.factory.ViewModelFactory;
 import com.example.mareu.model.Reservation;
-import com.example.mareu.ui.list_reservation.adapter.ReservationRecyclerViewAdapter;
 import com.example.mareu.ui.add_reservation.AddReservationActivity;
+import com.example.mareu.ui.list_reservation.adapter.ReservationRecyclerViewAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +43,7 @@ public class ListReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_reservation);
         ButterKnife.bind(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(this), DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         viewModel = retrieveViewModel();
         viewModel.state.observe(this, this::render);
     }

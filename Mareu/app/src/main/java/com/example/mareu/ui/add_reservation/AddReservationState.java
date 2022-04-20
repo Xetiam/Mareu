@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class AddReservationState {}
 class AddReservationStateInit extends AddReservationState {
-    private ArrayList<String> roomNames = new ArrayList<>();
+    private final ArrayList<String> roomNames;
 
 
     public AddReservationStateInit(ArrayList<String> roomNames) {
@@ -16,23 +16,17 @@ class AddReservationStateInit extends AddReservationState {
         return roomNames;
     }
 
-    public void setRoomNames(ArrayList<String> roomNames) {
-        this.roomNames = roomNames;
-    }
-
 
 }
 class AddReservationStateUpdated extends AddReservationState {
-    private Boolean isValid = false;
-    private Boolean isMailValid = false;
-    private Boolean isNameValid = false;
-    private ArrayList<String> roomNames = new ArrayList<>();
+    private final Boolean isValid;
+    private final Boolean isMailValid;
+    private final Boolean isNameValid;
 
-    public AddReservationStateUpdated(Boolean isValid, Boolean isMailValid, Boolean isNameValid, ArrayList<String> roomNames) {
+    public AddReservationStateUpdated(Boolean isValid, Boolean isMailValid, Boolean isNameValid) {
         this.isValid = isValid;
         this.isMailValid = isMailValid;
         this.isNameValid = isNameValid;
-        this.roomNames = roomNames;
     }
 
 
@@ -50,13 +44,11 @@ class AddReservationStateUpdated extends AddReservationState {
     }
 }
 class AddReservationStateAddPart extends AddReservationState {
-    private ArrayList<String> participants = new ArrayList<>();
-    public AddReservationStateAddPart(ArrayList<String> participants) {
-        this.participants = participants;
+    public AddReservationStateAddPart() {
     }
 }
 class AddReservationStateDeletePart extends AddReservationState{
-    private String participant = "";
+    private final String participant;
     public AddReservationStateDeletePart(String participant) {
         this.participant = participant;
     }

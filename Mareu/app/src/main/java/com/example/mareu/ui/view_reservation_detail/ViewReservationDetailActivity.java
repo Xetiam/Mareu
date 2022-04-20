@@ -35,7 +35,6 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
     TextView subject;
 
     private ViewReservationViewModel viewModel;
-    private Reservation mReservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,7 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_reservation_detail);
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        mReservation = (Reservation) intent.getExtras().get(RESERVATION);
+        Reservation mReservation = (Reservation) intent.getExtras().get(RESERVATION);
         reservationName.setText(mReservation.getNameDetail());
         reservationColor.setColorFilter(mReservation.getColor());
         partList.setText(mReservation.getParticipantsFormated());

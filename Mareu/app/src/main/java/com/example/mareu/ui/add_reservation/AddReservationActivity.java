@@ -69,7 +69,7 @@ public class AddReservationActivity extends AppCompatActivity {
     ImageView warningName;
 
     private AddReservationViewModel viewModel;
-    private ArrayList<TextView> listPartView = new ArrayList<>();
+    private final ArrayList<TextView> listPartView = new ArrayList<>();
 
 
     @Override
@@ -148,7 +148,7 @@ public class AddReservationActivity extends AppCompatActivity {
 
     private void renderInit(AddReservationState addReservationState) {
         AddReservationStateInit state = (AddReservationStateInit) addReservationState;
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, state.getRoomNames());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, state.getRoomNames());
         roomList.setAdapter(adapter);
         partButton.setEnabled(false);
     }
@@ -167,7 +167,7 @@ public class AddReservationActivity extends AppCompatActivity {
     }
 
     private void renderInputText(TextInputLayout input, ImageView imageView, AddReservationStateUpdated stateUpdated) {
-        String s = input.getEditText().getText().toString();
+        String s = Objects.requireNonNull(input.getEditText()).getText().toString();
         if(viewModel.noInput(s)){
             input.setBackgroundColor(Color.TRANSPARENT);
             imageView.setVisibility(View.INVISIBLE);
@@ -224,7 +224,7 @@ public class AddReservationActivity extends AppCompatActivity {
         partList.addView(part);
         partList.setVisibility(View.VISIBLE);
         listPartView.add(partName);
-        participantsInput.getEditText().setText("");
+        Objects.requireNonNull(participantsInput.getEditText()).setText("");
         listTitle.setVisibility(View.VISIBLE);
         viewModel.isReservationValid(formatDate(datePicker, timePicker), roomList.getSelectedItemPosition());
     }
@@ -245,9 +245,7 @@ public class AddReservationActivity extends AppCompatActivity {
         newButton.setLayoutParams(new CardView.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        newButton.setOnClickListener(v -> {
-            viewModel.deleteParticipant(participant);
-        });
+        newButton.setOnClickListener(v -> viewModel.deleteParticipant(participant));
         newButton.setId(View.generateViewId());
         return newButton;
     }
@@ -292,10 +290,10 @@ public class AddReservationActivity extends AppCompatActivity {
         viewModel.addReservation(roomId, datePicked, name, subject);
         finish();
     }
-    private void waningDisplay(int alertTitleId, int alertMessagId) {
+    private void waningDisplay(int alertTitleId, int alertMessageId) {
         AlertDialog alert = new AlertDialog.Builder(this).create();
         alert.setTitle(getString(alertTitleId));
-        alert.setMessage(getString(alertMessagId));
+        alert.setMessage(getString(alertMessageId));
         alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 (dialog, which) -> dialog.dismiss());
         alert.show();

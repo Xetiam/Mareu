@@ -6,16 +6,15 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.mareu.model.Reservation;
 import com.example.mareu.service.ReservationApiService;
-import com.example.mareu.ui.add_reservation.AddReservationState;
 
 import java.util.ArrayList;
 
 public class ViewReservationViewModel extends ViewModel {
-    private MutableLiveData<ViewReservationState> _state = new MutableLiveData<>();
+    private final MutableLiveData<ViewReservationState> _state = new MutableLiveData<>();
     LiveData<ViewReservationState> state = _state;
-    private ReservationApiService mApiService;
+    private final ReservationApiService mApiService;
     private int index;
-    private ArrayList<Reservation> mReservations;
+    private final ArrayList<Reservation> mReservations;
 
     public ViewReservationViewModel(ReservationApiService mApiService) {
         this.mApiService = mApiService;
@@ -24,12 +23,11 @@ public class ViewReservationViewModel extends ViewModel {
 
     public void addMeToMeeting() {
         Reservation mReservation = mReservations.get(index);
-        if(!mReservation.getParticipants().contains(mApiService.getUserName())){
+        if (!mReservation.getParticipants().contains(mApiService.getUserName())) {
             mReservation.getParticipants().add(mApiService.getUserName());
             mReservations.set(index, mReservation);
             this._state.postValue(new ViewReservationStateListUpdated(mReservation.getParticipantsFormated(), true));
-        }
-        else{
+        } else {
             mReservation.getParticipants().remove(mApiService.getUserName());
             mReservations.set(index, mReservation);
             this._state.postValue(new ViewReservationStateListUpdated(mReservation.getParticipantsFormated(), false));

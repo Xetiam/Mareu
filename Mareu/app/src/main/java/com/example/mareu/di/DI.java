@@ -1,6 +1,5 @@
 package com.example.mareu.di;
 
-import com.example.mareu.model.Reservation;
 import com.example.mareu.service.DummyReservationApiService;
 import com.example.mareu.service.ReservationApiService;
 

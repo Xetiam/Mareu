@@ -1,25 +1,22 @@
 package com.example.mareu.service;
 
-import com.example.mareu.R;
 import com.example.mareu.model.MeetingRoom;
-import com.example.mareu.model.Reservation;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class DummyMeetingRoomGenerator {
     public static ArrayList<MeetingRoom> generateMeetingRooms() {
         ArrayList<MeetingRoom> meetingRooms = new ArrayList<>();
-        for (int i = 0; i<=9; i++){
+        for (int i = 0; i <= 9; i++) {
             meetingRooms.add(new MeetingRoom(i));
         }
         return meetingRooms;
     }
-    public enum MeetingRoomName{
-        ROOM_ZERO("Mario",0),
+
+    public enum MeetingRoomName {
+        ROOM_ZERO("Mario", 0),
         ROOM_ONE("Luigi", 1),
         ROOM_TWO("Peach", 2),
         ROOM_THREE("Daisy", 3),
@@ -33,12 +30,14 @@ public class DummyMeetingRoomGenerator {
         private final String name;
         private final int id;
         private static Map<Integer, String> idToNameMapping;
+
         MeetingRoomName(String name, int id) {
             this.name = name;
             this.id = id;
         }
-        public static String getName(Integer id){
-            if(idToNameMapping == null){
+
+        public static String getName(Integer id) {
+            if (idToNameMapping == null) {
                 initMapping();
             }
             return idToNameMapping.get(id);
@@ -46,8 +45,8 @@ public class DummyMeetingRoomGenerator {
 
         private static void initMapping() {
             idToNameMapping = new HashMap<>();
-            for(MeetingRoomName val : values()){
-                idToNameMapping.put(val.id,val.name);
+            for (MeetingRoomName val : values()) {
+                idToNameMapping.put(val.id, val.name);
             }
         }
     }

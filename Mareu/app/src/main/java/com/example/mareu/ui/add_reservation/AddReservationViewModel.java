@@ -18,13 +18,12 @@ import java.util.Random;
 
 
 public class AddReservationViewModel extends ViewModel {
-    private MutableLiveData<AddReservationState> _state = new MutableLiveData<>();
+    private final MutableLiveData<AddReservationState> _state = new MutableLiveData<>();
     LiveData<AddReservationState> state = _state;
-    private ReservationApiService mApiService;
+    private final ReservationApiService mApiService;
 
-    private  ArrayList<String> roomNames = new ArrayList<>();
-    private Calendar datePicked = Calendar.getInstance();
-    private ArrayList<String> participants = new ArrayList<>();
+    private final Calendar datePicked = Calendar.getInstance();
+    private final ArrayList<String> participants = new ArrayList<>();
 
     private Boolean isValid = false;
     private Boolean isMailValid = false;
@@ -34,6 +33,7 @@ public class AddReservationViewModel extends ViewModel {
 
     public AddReservationViewModel(ReservationApiService mApiService) {
         this.mApiService = mApiService;
+        ArrayList<String> roomNames = new ArrayList<>();
         this._state.postValue(new AddReservationStateInit(roomNames));
     }
 
@@ -41,13 +41,13 @@ public class AddReservationViewModel extends ViewModel {
         MeetingRoom meetingRoom = mApiService.getMeetingRooms().get(roomId);
         if (participants.size() > 1 && isNameValid) {
             isValid = meetingRoom.getVacancy(datePicked);
-            this._state.postValue(new AddReservationStateUpdated(isValid, isMailValid, isNameValid, roomNames));
+            this._state.postValue(new AddReservationStateUpdated(isValid, isMailValid, isNameValid));
         }
     }
 
     public void addReservation(int roomId, Calendar datePicked, String name, String subject) {
         MeetingRoom meetingRoomSelected = mApiService.getMeetingRooms().get(roomId);
-        Reservation newReservation = null;
+        Reservation newReservation;
         newReservation = new Reservation(meetingRoomSelected.getRoomId(),
                 datePicked,
                 participants,
@@ -71,27 +71,19 @@ public class AddReservationViewModel extends ViewModel {
 
     public void initListener(String s, Boolean mailFormat) {
         if (mailFormat) {
-            if (Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
-                isMailValid = true;
-            } else {
-                isMailValid = false;
-            }
+            isMailValid = Patterns.EMAIL_ADDRESS.matcher(s).matches();
         } else {
-            if (s.length() >= 5 && s.length() <= 84) {
-                isNameValid = true;
-            } else {
-                isNameValid = false;
-            }
+            isNameValid = s.length() >= 5 && s.length() <= 84;
         }
-        this._state.postValue(new AddReservationStateUpdated(isValid, isMailValid, isNameValid, roomNames));
+        this._state.postValue(new AddReservationStateUpdated(isValid, isMailValid, isNameValid));
     }
 
     public void addParticipant(String newParticipant) {
         if (this.participants.contains(newParticipant)) {
-            this._state.postValue(new AddReservationStateUpdated(isValid,false,isNameValid,roomNames));
+            this._state.postValue(new AddReservationStateUpdated(isValid, false, isNameValid));
         } else {
             this.participants.add(newParticipant);
-            this._state.postValue(new AddReservationStateAddPart(participants));
+            this._state.postValue(new AddReservationStateAddPart());
         }
     }
 
@@ -102,7 +94,7 @@ public class AddReservationViewModel extends ViewModel {
         }
     }
 
-    public int getRandomColor(){
+    public int getRandomColor() {
         Random rnd = new Random();
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }

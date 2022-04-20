@@ -2,7 +2,6 @@ package com.example.mareu.ui.list_reservation.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,15 +54,11 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
                 reservation.getName(),
                 reservation.getMeetingDateCorrectlyFormatted(),
                 mAPiService.getMeetingRoomName(reservation.getRoomId())));
-        String participantsString = reservation.getParticipants().toString().substring(1,reservation.getParticipants().toString().length()-1);
+        String participantsString = reservation.getParticipants().toString().substring(1, reservation.getParticipants().toString().length() - 1);
         holder.mReservationColor.setColorFilter(reservation.getColor(), PorterDuff.Mode.MULTIPLY);
         holder.mParticipants.setText(participantsString);
-        holder.mDeleteButton.setOnClickListener(v -> {
-            EventBus.getDefault().post(new DeleteReservationEvent(reservation));
-        });
-        holder.itemView.setOnClickListener(v -> {
-            ViewReservationDetailActivity.navigateToDetail((Activity) mContext ,reservation);
-        });
+        holder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteReservationEvent(reservation)));
+        holder.itemView.setOnClickListener(v -> ViewReservationDetailActivity.navigateToDetail((Activity) mContext, reservation));
     }
 
 
