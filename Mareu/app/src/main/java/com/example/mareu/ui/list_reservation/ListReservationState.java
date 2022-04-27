@@ -8,7 +8,7 @@ public class ListReservationState {
 }
 
 class ListReservationUpdated extends ListReservationState {
-    public ArrayList<Reservation> reservations;
+    public final ArrayList<Reservation> reservations;
 
     public ListReservationUpdated(ArrayList<Reservation> reservations) {
         this.reservations = reservations;

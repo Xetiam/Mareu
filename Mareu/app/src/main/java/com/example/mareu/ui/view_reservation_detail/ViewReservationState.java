@@ -2,8 +2,8 @@ package com.example.mareu.ui.view_reservation_detail;
 
 public class ViewReservationState {}
 class ViewReservationStateListUpdated extends ViewReservationState {
-    private String formatedListPart = "";
-    private Boolean isMyMail;
+    private final String formatedListPart;
+    private final Boolean isMyMail;
 
     public ViewReservationStateListUpdated(String formatedListPart, Boolean isMyMail){
         this.formatedListPart = formatedListPart;
@@ -19,7 +19,7 @@ class ViewReservationStateListUpdated extends ViewReservationState {
     }
 }
 class ViewReservationStateInit extends ViewReservationState {
-    private Boolean isMyMail;
+    private final Boolean isMyMail;
 
     public ViewReservationStateInit(Boolean isMyMail){
         this.isMyMail = isMyMail;

@@ -26,6 +26,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.mareu.R;
 import com.example.mareu.factory.ViewModelFactory;
@@ -39,7 +40,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
+//noinspection NonConstantResourceId
 public class AddReservationActivity extends AppCompatActivity {
     @BindView(R.id.nameLyt)
     TextInputLayout nameInput;
@@ -241,7 +242,7 @@ public class AddReservationActivity extends AppCompatActivity {
 
     private ImageButton createButton(String participant) {
         ImageButton newButton = new ImageButton(this);
-        newButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_delete_24));
+        newButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_delete_24));
         newButton.setLayoutParams(new CardView.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));

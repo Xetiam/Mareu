@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class AddReservationViewModel extends ViewModel {
     private final MutableLiveData<AddReservationState> _state = new MutableLiveData<>();
-    LiveData<AddReservationState> state = _state;
+    final LiveData<AddReservationState> state = _state;
     private final ReservationApiService mApiService;
 
     private final Calendar datePicked = Calendar.getInstance();

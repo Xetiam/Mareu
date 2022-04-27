@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class ViewReservationViewModel extends ViewModel {
     private final MutableLiveData<ViewReservationState> _state = new MutableLiveData<>();
-    LiveData<ViewReservationState> state = _state;
+    final LiveData<ViewReservationState> state = _state;
     private final ReservationApiService mApiService;
     private int index;
     private final ArrayList<Reservation> mReservations;

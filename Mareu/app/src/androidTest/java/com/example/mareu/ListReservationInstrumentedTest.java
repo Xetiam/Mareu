@@ -14,10 +14,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.hasToString;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertTrue;
 
 import android.widget.DatePicker;
 
@@ -27,7 +24,6 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.example.mareu.ui.list_reservation.ListReservationActivity;
-import com.example.mareu.ui.view_reservation_detail.ViewReservationDetailActivity;
 
 import org.hamcrest.Matchers;
 import org.junit.After;

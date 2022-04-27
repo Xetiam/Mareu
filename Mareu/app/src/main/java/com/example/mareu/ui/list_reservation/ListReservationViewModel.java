@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ListReservationViewModel extends ViewModel {
     private final ReservationApiService mApiService;
     private ArrayList<Reservation> mReservations;
-    MutableLiveData<ListReservationState> state = new MutableLiveData<>();
+    final MutableLiveData<ListReservationState> state = new MutableLiveData<>();
     public static final int SORT_MODE_DATE = 0;
     public static final int SORT_MODE_ROOM = 1;
     public static final int SORT_MODE_CREATION = 2;

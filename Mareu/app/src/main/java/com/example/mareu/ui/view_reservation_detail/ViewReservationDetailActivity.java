@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.mareu.R;
 import com.example.mareu.factory.ViewModelFactory;
@@ -63,23 +64,22 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
     }
 
     private void render(ViewReservationState viewReservationState) {
-        if(viewReservationState instanceof ViewReservationStateListUpdated){
+        if (viewReservationState instanceof ViewReservationStateListUpdated) {
             ViewReservationStateListUpdated state = (ViewReservationStateListUpdated) viewReservationState;
             partList.setText(state.getFormatedListPart());
             setDrawable(state.isMyMail());
         }
-        if(viewReservationState instanceof ViewReservationStateInit){
+        if (viewReservationState instanceof ViewReservationStateInit) {
             ViewReservationStateInit state = (ViewReservationStateInit) viewReservationState;
             setDrawable(state.isMyMail());
         }
     }
 
     private void setDrawable(Boolean myMail) {
-        if(myMail){
-            partButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_remove_24));
-        }
-        else{
-            partButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_add_24));
+        if (myMail) {
+            partButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_remove_24));
+        } else {
+            partButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_add_24));
         }
     }
 
@@ -89,7 +89,7 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.participate_button)
-    void setPartButton(){
+    void setPartButton() {
         viewModel.addMeToMeeting();
     }
 

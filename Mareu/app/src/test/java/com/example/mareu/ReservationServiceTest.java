@@ -45,14 +45,14 @@ public class ReservationServiceTest {
     @Test
     public void getReservationsWithSuccess() {
         ArrayList<Reservation> reservations = service.getReservation();
-        ArrayList<Reservation> expectedReservations = new ArrayList<Reservation>();
-        Reservation r1 = new Reservation(0, Calendar.getInstance(), new ArrayList<String>(), "test1", getRandomColor(), Calendar.getInstance(), subject);
+        ArrayList<Reservation> expectedReservations = new ArrayList<>();
+        Reservation r1 = new Reservation(0, Calendar.getInstance(), new ArrayList<>(), "test1", getRandomColor(), Calendar.getInstance(), subject);
         service.createMeeting(r1);
         expectedReservations.add(r1);
-        Reservation r2 = new Reservation(1, Calendar.getInstance(), new ArrayList<String>(), "test2", getRandomColor(), Calendar.getInstance(), subject);
+        Reservation r2 = new Reservation(1, Calendar.getInstance(), new ArrayList<>(), "test2", getRandomColor(), Calendar.getInstance(), subject);
         service.createMeeting(r2);
         expectedReservations.add(r2);
-        Reservation r3 = new Reservation(2, Calendar.getInstance(), new ArrayList<String>(), "test3", getRandomColor(), Calendar.getInstance(), subject);
+        Reservation r3 = new Reservation(2, Calendar.getInstance(), new ArrayList<>(), "test3", getRandomColor(), Calendar.getInstance(), subject);
         service.createMeeting(r3);
         expectedReservations.add(r3);
         assertThat(reservations, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedReservations.toArray()));
@@ -67,9 +67,9 @@ public class ReservationServiceTest {
 
     @Test
     public void deleteNeighbourWithSuccess() {
-        Reservation r1 = new Reservation(0, Calendar.getInstance(), new ArrayList<String>(), "test1", getRandomColor(), Calendar.getInstance(), subject);
-        Reservation r2 = new Reservation(1, Calendar.getInstance(), new ArrayList<String>(), "test2", getRandomColor(), Calendar.getInstance(), subject);
-        Reservation r3 = new Reservation(2, Calendar.getInstance(), new ArrayList<String>(), "test3", getRandomColor(), Calendar.getInstance(), subject);
+        Reservation r1 = new Reservation(0, Calendar.getInstance(), new ArrayList<>(), "test1", getRandomColor(), Calendar.getInstance(), subject);
+        Reservation r2 = new Reservation(1, Calendar.getInstance(), new ArrayList<>(), "test2", getRandomColor(), Calendar.getInstance(), subject);
+        Reservation r3 = new Reservation(2, Calendar.getInstance(), new ArrayList<>(), "test3", getRandomColor(), Calendar.getInstance(), subject);
         service.createMeeting(r1);
         service.createMeeting(r2);
         service.createMeeting(r3);
@@ -80,7 +80,7 @@ public class ReservationServiceTest {
 
     @Test
     public void CreateNeighbourWithSuccess() {
-        Reservation reservationToCreate = new Reservation(0, Calendar.getInstance(), new ArrayList<String>(), "test1", getRandomColor(), Calendar.getInstance(), subject);
+        Reservation reservationToCreate = new Reservation(0, Calendar.getInstance(), new ArrayList<>(), "test1", getRandomColor(), Calendar.getInstance(), subject);
         service.createMeeting(reservationToCreate);
         assertTrue(service.getReservation().contains(reservationToCreate));
     }
