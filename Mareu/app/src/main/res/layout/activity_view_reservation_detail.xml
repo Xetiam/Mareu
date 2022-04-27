@@ -36,6 +36,7 @@
             app:layout_constraintTop_toTopOf="@+id/detail_reservation_color"
             tools:text="Reservation Titre" />
 
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/participate_button"
             android:layout_width="wrap_content"
@@ -55,6 +56,13 @@
             android:layout_marginHorizontal="@dimen/short_margin"
             app:layout_constraintTop_toBottomOf="@+id/detail_reservation_color"
             tools:text="Réunion prévu le : jj/mm/aaaa à hh:mm" />
+        <TextView
+            android:id="@+id/detail_room_picked"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/short_margin"
+            app:layout_constraintTop_toBottomOf="@+id/detail_date_picked"
+            tools:text="La réunion se déroulera dans la salle :"/>
 
         <TextView
             android:id="@+id/detail_title_list"
@@ -63,7 +71,7 @@
             android:layout_marginHorizontal="@dimen/medium_margin"
             android:text="@string/title_list"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/detail_date_picked"
+            app:layout_constraintTop_toBottomOf="@+id/detail_room_picked"
             tools:layout_editor_absoluteX="8dp" />
 
         <androidx.cardview.widget.CardView

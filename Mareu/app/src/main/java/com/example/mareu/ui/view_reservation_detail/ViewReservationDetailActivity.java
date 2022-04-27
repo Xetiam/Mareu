@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import com.example.mareu.R;
 import com.example.mareu.factory.ViewModelFactory;
 import com.example.mareu.model.Reservation;
+import com.example.mareu.service.DummyMeetingRoomGenerator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
@@ -28,6 +29,8 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
     ImageView reservationColor;
     @BindView(R.id.participate_button)
     FloatingActionButton partButton;
+    @BindView(R.id.detail_room_picked)
+    TextView roopPicked;
     @BindView(R.id.detail_participants_list)
     TextView partList;
     @BindView(R.id.detail_date_picked)
@@ -46,6 +49,7 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
         Reservation mReservation = (Reservation) intent.getExtras().get(RESERVATION);
         reservationName.setText(mReservation.getNameDetail());
         reservationColor.setColorFilter(mReservation.getColor());
+        roopPicked.setText(getDetailRoom(DummyMeetingRoomGenerator.MeetingRoomName.getName(mReservation.getRoomId())));
         partList.setText(mReservation.getParticipantsFormated());
         viewModel = retrieveViewModel();
         viewModel.initReservation(mReservation);
@@ -55,6 +59,10 @@ public class ViewReservationDetailActivity extends AppCompatActivity {
         viewModel.isMyMail(mReservation.getParticipants());
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private String getDetailRoom(String name) {
+        return "Salle de réunion : " + name;
     }
 
     @Override
