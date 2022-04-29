@@ -18,7 +18,6 @@ public class Reservation implements Serializable {
     private final Calendar meetingCalendar;
     private final ArrayList<String> participants;
     private final int color;
-    private final Calendar creationCalendar;
     private final String subject;
 
     //Constructor
@@ -28,7 +27,6 @@ public class Reservation implements Serializable {
         this.participants = participants;
         this.name = name;
         this.color = color;
-        this.creationCalendar = creationDate;
         this.subject = subject;
     }
 
@@ -213,10 +211,6 @@ public class Reservation implements Serializable {
 
     private boolean isSameDay(Calendar today) {
         return meetingCalendar.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH);
-    }
-
-    public Calendar getCreationCalendar() {
-        return creationCalendar;
     }
 
     public SpannableStringBuilder getMeetingCalendarFormated() {
