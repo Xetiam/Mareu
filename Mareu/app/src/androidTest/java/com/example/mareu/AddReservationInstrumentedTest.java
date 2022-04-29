@@ -29,7 +29,7 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AddReservationInstrumentedTest {
     @Rule
-    public ActivityScenarioRule<AddReservationActivity> mActivityRule = new ActivityScenarioRule<>(AddReservationActivity.class);
+    public final ActivityScenarioRule<AddReservationActivity> mActivityRule = new ActivityScenarioRule<>(AddReservationActivity.class);
     private AddReservationActivity mActivity;
 
     @Before

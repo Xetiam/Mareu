@@ -17,11 +17,14 @@
     <string name="alert_title_participant">Champ de participant invalide</string>
     <string name="alert_message_participant">"&#8226;Vous devez renseigner les mails des participants sous ce format :\n\t\t\t\t\t\t\txxxxxxxxx@xxx.xx\n&#8226; De plus pour créer la réunion vous devez renseigner au moins deux participants."</string>
 
-    <!--Menu de tri-->
-    <string name="menu_title">Mode de tri</string>
-    <string name="menu_date">Trier par date</string>
-    <string name="menu_room">Trier par salle</string>
-    <string name="menu_creation">Trier par date de création</string>
+    <!--Menu de filtre-->
+    <string name="menu_title">Sélectionner un filtre</string>
+    <string name="menu_date">Filtrer par date</string>
+    <string name="menu_room">Filtrer par salle</string>
+    <string name="menu_reset_filter">Supprimer les filtres</string>
+    <string name="select_room">Sélectionner une salle de réunion :</string>
+    <string name="validate_alert_button">Confirmer</string>
+    <string name="cancel_alert_button">Annuler</string>
 
     <!--ViewReservationDetail-->
     <string name="title_list">Liste des participants :</string>

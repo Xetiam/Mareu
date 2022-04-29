@@ -36,7 +36,7 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ListReservationInstrumentedTest {
     @Rule
-    public ActivityScenarioRule<ListReservationActivity> mActivityRule = new ActivityScenarioRule<>(ListReservationActivity.class);
+    public final ActivityScenarioRule<ListReservationActivity> mActivityRule = new ActivityScenarioRule<>(ListReservationActivity.class);
     private ListReservationActivity mActivity;
 
     @Before
@@ -59,44 +59,42 @@ public class ListReservationInstrumentedTest {
     }
 
     @Test
-    public void B_shouldSortByDate() {
+    public void B_shouldFilterByDate() {
         generatingMeetings();
         onView(withId(R.id.menu_main_setting)).perform(click());
-        onView(withText(endsWith("Trier par date"))).perform(click());
+        onView(withText("Filtrer par date")).perform(click());
+        onView(withId(R.id.popup_Date)).perform(PickerActions.setDate(2024, 5   , 15));
+        onView(withText(endsWith("OK"))).perform(click());
         onView(new RecyclerViewMatcher(R.id.container)
                 .atPositionOnView(0, R.id.reservationTitle))
                 .check(matches(withText("Reunion 3 - 15/04/2024 - Peach")));
+        destroyMeetings();
+    }
+
+    @Test
+    public void C_shouldFilterByRoom() {
+        generatingMeetings();
+        onView(withId(R.id.menu_main_setting)).perform(click());
+        onView(withText("Filtrer par salle")).perform(click());
+        onView(withId(R.id.popup_Spinner)).perform(click());
+        onView(withText("Luigi")).perform(click());
+        onView(withText("Confirmer")).perform(click());
         onView(new RecyclerViewMatcher(R.id.container)
-                .atPositionOnView(1, R.id.reservationTitle))
-                .check(matches(withText("Reunion 2 - 15/04/2026 - Mario")));
-        onView(new RecyclerViewMatcher(R.id.container)
-                .atPositionOnView(2, R.id.reservationTitle))
+                .atPositionOnView(0, R.id.reservationTitle))
                 .check(matches(withText("Reunion 1 - 15/04/2028 - Luigi")));
         destroyMeetings();
     }
 
     @Test
-    public void C_shouldSortByRoom() {
+    public void D_shouldFilterByCreation() {
         generatingMeetings();
         onView(withId(R.id.menu_main_setting)).perform(click());
-        onView(withText(endsWith("Trier par salle"))).perform(click());
-        onView(new RecyclerViewMatcher(R.id.container)
-                .atPositionOnView(2, R.id.reservationTitle))
-                .check(matches(withText("Reunion 3 - 15/04/2024 - Peach")));
-        onView(new RecyclerViewMatcher(R.id.container)
-                .atPositionOnView(0, R.id.reservationTitle))
-                .check(matches(withText("Reunion 2 - 15/04/2026 - Mario")));
-        onView(new RecyclerViewMatcher(R.id.container)
-                .atPositionOnView(1, R.id.reservationTitle))
-                .check(matches(withText("Reunion 1 - 15/04/2028 - Luigi")));
-        destroyMeetings();
-    }
-
-    @Test
-    public void D_shouldSortByCreation() {
-        generatingMeetings();
+        onView(withText("Filtrer par salle")).perform(click());
+        onView(withId(R.id.popup_Spinner)).perform(click());
+        onView(withText("Luigi")).perform(click());
+        onView(withText("Confirmer")).perform(click());
         onView(withId(R.id.menu_main_setting)).perform(click());
-        onView(withText(endsWith("Trier par date de création"))).perform(click());
+        onView(withText("Supprimer les filtres")).perform(click());
         onView(new RecyclerViewMatcher(R.id.container)
                 .atPositionOnView(2, R.id.reservationTitle))
                 .check(matches(withText("Reunion 3 - 15/04/2024 - Peach")));
@@ -185,7 +183,7 @@ public class ListReservationInstrumentedTest {
         onView(withId(R.id.roomList))
                 .perform(click());
         onData(anything()).atPosition(roomId).perform(click());
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(year, month   , day));
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(year, month , day));
         onView(withId(R.id.create)).perform(scrollTo())
                 .perform(click());
     }

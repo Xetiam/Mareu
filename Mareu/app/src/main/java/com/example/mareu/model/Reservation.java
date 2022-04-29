@@ -146,8 +146,8 @@ public class Reservation implements Serializable {
 
     @NonNull
     private String formatWithDayOfMeeting() {
-        String day = "";
-        String month = "";
+        String day;
+        String month;
         if (isTwoDigitsMonth()) {
             month =  formatTwoDigitsMonth();
         } else {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <item name="popup_Spinner" type="id"/>
+    <item name="popup_Date" type="id"/>
+</resources>

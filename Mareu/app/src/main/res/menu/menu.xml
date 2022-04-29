@@ -12,7 +12,7 @@
                 android:id="@+id/by_date"/>
             <item android:title="@string/menu_room"
                 android:id="@+id/by_room"/>
-            <item android:title="@string/menu_creation"
+            <item android:title="@string/menu_reset_filter"
                 android:id="@+id/by_creation"/>
         </menu>
     </item>

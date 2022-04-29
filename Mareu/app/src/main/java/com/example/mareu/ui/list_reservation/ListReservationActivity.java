@@ -1,13 +1,18 @@
 package com.example.mareu.ui.list_reservation;
 
-import static com.example.mareu.ui.list_reservation.ListReservationViewModel.SORT_MODE_CREATION;
-import static com.example.mareu.ui.list_reservation.ListReservationViewModel.SORT_MODE_DATE;
-import static com.example.mareu.ui.list_reservation.ListReservationViewModel.SORT_MODE_ROOM;
+import static com.example.mareu.ui.list_reservation.ListReservationViewModel.FILTER_MODE_CREATION;
+import static com.example.mareu.ui.list_reservation.ListReservationViewModel.FILTER_MODE_DATE;
+import static com.example.mareu.ui.list_reservation.ListReservationViewModel.FILTER_MODE_ROOM;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -18,6 +23,7 @@ import com.example.mareu.R;
 import com.example.mareu.event.DeleteReservationEvent;
 import com.example.mareu.factory.ViewModelFactory;
 import com.example.mareu.model.Reservation;
+import com.example.mareu.service.DummyMeetingRoomGenerator;
 import com.example.mareu.ui.add_reservation.AddReservationActivity;
 import com.example.mareu.ui.list_reservation.adapter.ReservationRecyclerViewAdapter;
 
@@ -25,12 +31,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ListReservationActivity extends AppCompatActivity {
+public class ListReservationActivity extends AppCompatActivity
+        implements DatePickerDialog.OnDateSetListener {
     @BindView(R.id.container)
     RecyclerView mRecyclerView;
 
@@ -45,7 +53,7 @@ public class ListReservationActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         viewModel = retrieveViewModel();
-        viewModel.state.observe(this, this::render);
+        viewModel._state.observe(this, this::render);
     }
 
     @Override
@@ -63,17 +71,54 @@ public class ListReservationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.by_date:
-                viewModel.sortingCall(SORT_MODE_DATE);
+                createCalendarDialog();
                 return true;
             case R.id.by_room:
-                viewModel.sortingCall(SORT_MODE_ROOM);
+                createSpinnerDialog();
                 return true;
             case R.id.by_creation:
-                viewModel.sortingCall(SORT_MODE_CREATION);
+                viewModel.filteringCall(FILTER_MODE_CREATION, "");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void createSpinnerDialog() {
+        ArrayList<String> roomList = initRoomList();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roomList);
+        Spinner popupSpinner = new Spinner(this, Spinner.MODE_DIALOG);
+        popupSpinner.setId(R.id.popup_Spinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        popupSpinner.setAdapter(adapter);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.select_room);
+        builder.setCancelable(true);
+        builder.setNegativeButton(getText(R.string.cancel_alert_button), null);
+        builder.setPositiveButton(getText(R.string.validate_alert_button), (dialog, which) ->
+                viewModel.filteringCall(FILTER_MODE_ROOM, String.valueOf(popupSpinner.getSelectedItemPosition())));
+        builder.setView(popupSpinner);
+        builder.create().show();
+    }
+
+    private void createCalendarDialog() {
+        Calendar today = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                ListReservationActivity.this,
+                today.get(Calendar.YEAR), today.get(Calendar.MONTH),
+                today.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_POSITIVE, getText(R.string.validate_alert_button), datePickerDialog);
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, getText(R.string.cancel_alert_button), datePickerDialog);
+        datePickerDialog.getDatePicker().setId(R.id.popup_Date);
+        datePickerDialog.show();
+    }
+
+    private ArrayList<String> initRoomList() {
+        ArrayList<String> roomList = new ArrayList<>();
+        for (int i = 0; i <= 9; i++) {
+            roomList.add(DummyMeetingRoomGenerator.MeetingRoomName.getName(i));
+        }
+        return roomList;
     }
 
     @Override
@@ -81,19 +126,21 @@ public class ListReservationActivity extends AppCompatActivity {
         super.onResume();
         viewModel.initList();
     }
+
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
     }
+
     @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
 
-    private void render(ListReservationState listReservationState){
-        if(listReservationState instanceof ListReservationUpdated){
+    private void render(ListReservationState listReservationState) {
+        if (listReservationState instanceof ListReservationUpdated) {
             ListReservationUpdated state = (ListReservationUpdated) listReservationState;
             ArrayList<Reservation> reservations = state.reservations;
             ReservationRecyclerViewAdapter adapter = new ReservationRecyclerViewAdapter(reservations, this);
@@ -112,4 +159,9 @@ public class ListReservationActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        viewModel.filteringCall(FILTER_MODE_DATE, String.valueOf(i + i1 + i2));
+        datePicker.removeAllViews();
+    }
 }
