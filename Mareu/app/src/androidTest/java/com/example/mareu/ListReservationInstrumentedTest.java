@@ -64,7 +64,7 @@ public class ListReservationInstrumentedTest {
         onView(withId(R.id.menu_main_setting)).perform(click());
         onView(withText("Filtrer par date")).perform(click());
         onView(withId(R.id.popup_Date)).perform(PickerActions.setDate(2024, 5   , 15));
-        onView(withText(endsWith("OK"))).perform(click());
+        onView(withText(endsWith("CONFIRMER"))).perform(click());
         onView(new RecyclerViewMatcher(R.id.container)
                 .atPositionOnView(0, R.id.reservationTitle))
                 .check(matches(withText("Reunion 3 - 15/04/2024 - Peach")));
